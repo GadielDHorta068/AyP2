@@ -1,0 +1,22 @@
+package TP1E3;
+
+public class comparar {
+    public static string calcular(int a, int b) {
+    	String resultado;
+        if(a>b)
+        {
+        	resultado = a + "Es mas grande";
+        	return resultado;
+        }
+        if(a<b)
+        {
+        	resultado = b + "Es mas grande";
+        	return resultado;
+        }
+        if(a==b)
+        {
+        	resultado = "Son iguales";
+        	return resultado;
+        }
+    }
+}

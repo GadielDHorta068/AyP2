@@ -1,0 +1,36 @@
+package ejercicio1;
+
+import java.util.Scanner;
+
+public class ejercicio {
+
+	public static void main(String[] args) {
+		int A; //Primer numero
+		int B; //Segundo numero
+		
+		
+		System.out.print("Programa de operaciones basicas de dos numeros ");
+		Scanner myScanner = new Scanner(System.in);		
+		
+		System.out.print("Primer numero:");
+		A = myScanner.nextInt();
+		//System.out.print(A);
+
+		System.out.print("Segundo numero:");
+		B = myScanner.nextInt();
+		//System.out.print(B);
+		
+		int suma = A+B;
+		int resta = A-B;
+		int multiplicacion = A*B;
+		int division = A/B;
+		
+		System.out.printf("Suma		",suma);
+		System.out.printf("Rest		",resta);
+		System.out.printf("Mult		",multiplicacion);
+		System.out.printf("Divi		",division);
+		
+		System.exit(0);
+	}
+
+}

@@ -1,0 +1,8 @@
+package TP1E2;
+
+public class CalculosCirculo {
+
+}
+/* Escribir un programa que reciba el radio de un círculo e imprima
+ *  el diámetro (2r), la circunferencia (2πr) y el área (πr2) de este círculo. 
+ *  Utilizar el valor constante 3.14159 para π. */
