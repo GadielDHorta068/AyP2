@@ -1,0 +1,11 @@
+package TP1E5;
+
+public class esmultiplo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
+/*5. Escribir un programa que lee dos números e imprima si el primero es múltiplo del segundo. */

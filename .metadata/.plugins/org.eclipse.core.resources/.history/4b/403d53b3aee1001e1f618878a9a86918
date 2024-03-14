@@ -1,0 +1,13 @@
+package TP1E7;
+
+public class cubosycuadrados {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
+/* Escribir un programa que imprima una tabla de
+ *  los cuadrados y los cubos de los números del 0 al 10. */
+ */

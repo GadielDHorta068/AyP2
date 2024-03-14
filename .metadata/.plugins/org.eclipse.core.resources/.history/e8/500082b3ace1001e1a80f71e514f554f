@@ -1,0 +1,27 @@
+package TP1E6;
+import java.util.Scanner;
+
+public class concatenar {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String nombre;
+		String apellido;
+		Scanner scanner;
+		
+		scanner = new Scanner(System.in);
+		
+		System.out.print("Ingrese el primer numero");
+		nombre = scanner.next();
+		
+		System.out.print("Ingrese el segundo numero");
+		apellido = scanner.next();
+		
+		String concatenado = nombre +  " " + apellido;
+		
+		System.out.print(concatenado));
+		
+		scanner.close();
+	}
+
+}
