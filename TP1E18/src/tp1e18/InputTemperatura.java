@@ -1,23 +1,23 @@
-package TP1E18;
+package tp1e18;
 
 import java.util.Scanner;
 
 public class InputTemperatura {
 
-	private String Dato;
-	static private float TempOriginal;
+	private String dato;
+	static private float tempOriginal;
 	
     public static void main(String[] args) {
         InputTemperatura input = new InputTemperatura();
-        input.Iniciar();
+        input.iniciar();
     }
-	
-	public void Iniciar() {
+	//Prints y llamar conversion
+	public void iniciar() {
 		Scanner myScanner = new Scanner(System.in);
 		
 		System.out.println("Para empezar");
 		System.out.println("Ingrese la temperatura original");
-		TempOriginal = myScanner.nextFloat();
+		tempOriginal = myScanner.nextFloat();
 		
 		System.out.println("A que temperatura te gustaria convertir?");
 		System.out.println("(Se asume el valor seleccionado como la unidad a convertir)");
@@ -27,14 +27,14 @@ public class InputTemperatura {
 		myScanner.close();
 		System.exit(0);
 	}
-
+	//Funcion para convertir el dato ingresado a la nueva unidad
 	public float setDato(Scanner myScanner) {
-		Dato = myScanner.next();
-		Dato.toLowerCase();
-		if (Dato.equals("c")) {
-			return conversiones.ToFar.CentToFahr(TempOriginal);
-		}else if(Dato.equals("f")){
-		 	return conversiones.ToCent.FahrToCent(TempOriginal);
+		dato = myScanner.next();
+		dato.toLowerCase();
+		if (dato.equals("c")) {
+			return conversiones.ToFar.centToFahr(tempOriginal);
+		}else if(dato.equals("f")){
+		 	return conversiones.ToCent.fahrToCent(tempOriginal);
 		}else {
 			setDato(myScanner);
 		}

@@ -1,4 +1,4 @@
-package TP1E20;
+package tp1e20;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -18,25 +18,18 @@ public class JuegoAzar {
         	
             int numeroAleatorio = random.nextInt(1000) + 1;
             int intentos = 0;
-            int numeroIngresado;
+            int numeroIngresado = 0;
 
             System.out.println("Debes adivinar el numero que eleji");
             System.out.println("Es un número entre 1 y 1000. Cual es?");
-
-            do {
-                System.out.print("Ingresa un número: ");
-                numeroIngresado = scanner.nextInt();
-                intentos++;
-
-                if (numeroIngresado < numeroAleatorio) {
-                    System.out.println("Demasiado bajo. Inténtalo de nuevo.");
-                } else if (numeroIngresado > numeroAleatorio) {
-                    System.out.println("Demasiado alto. Inténtalo de nuevo.");
-                }
-            } while (numeroIngresado != numeroAleatorio);
-
+         
+            //Ejecuto el juego
+            intentos = logicaJuego(numeroAleatorio, numeroIngresado, scanner, intentos);
+            
+            //Resultado del juego
             System.out.println("¡Adivinaste en " + intentos + " intentos!");
-
+            
+            //Repetir o no logica de juego
             System.out.print("¿Quieres jugar de nuevo? (s/n): ");
             String opcion = scanner.next().toLowerCase();
 
@@ -48,4 +41,19 @@ public class JuegoAzar {
 
         scanner.close();
 	}
+	private static int logicaJuego(int numeroAleatorio, int numeroIngresado, Scanner scanner, int intentos) {
+        do {
+            System.out.print("Ingresa un número: ");
+            numeroIngresado = scanner.nextInt();
+            intentos++;
+
+            if (numeroIngresado < numeroAleatorio) {
+                System.out.println("Demasiado bajo. Inténtalo de nuevo.");
+            } else if (numeroIngresado > numeroAleatorio) {
+                System.out.println("Demasiado alto. Inténtalo de nuevo.");
+            }
+        } while (numeroIngresado != numeroAleatorio);
+        return intentos;
+	}
 }
+
