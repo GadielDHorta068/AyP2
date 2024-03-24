@@ -7,17 +7,29 @@ public class testConjuntosEnteros {
         // Crear dos conjuntos para probar
         conjuntosEnteros conjunto1 = new conjuntosEnteros();
         conjuntosEnteros conjunto2 = new conjuntosEnteros();
+        
+        //Pruebo con mas numeros
+        Random rnd = new Random();
+        boolean full = true;
+        
+        for (int i=0; i< 100; i++) {
+        	if(full) {
+            	conjunto1.insertarElemento(rnd.nextInt(99));
+            	conjunto2.insertarElemento(rnd.nextInt(99));
+        	}else {	//Conjuntos escritos a mano
+                // Agrego elementos en conjunto1
+                conjunto1.insertarElemento(10);
+                conjunto1.insertarElemento(20);
+                conjunto1.insertarElemento(30);
 
-        // Agrego elementos en conjunto1
-        conjunto1.insertarElemento(10);
-        conjunto1.insertarElemento(20);
-        conjunto1.insertarElemento(30);
 
-        // Agrego elementos en conjunto2
-        conjunto2.insertarElemento(20);
-        conjunto2.insertarElemento(40);
-        conjunto2.insertarElemento(50);
-
+                // Agrego elementos en conjunto2
+                conjunto2.insertarElemento(20);
+                conjunto2.insertarElemento(40);
+                conjunto2.insertarElemento(50);
+        	}
+        }
+       
         // Pruebo el método aStringConjunto
         System.out.println("Conjunto 1: " + conjunto1.aStringConjunto());
         System.out.println("Conjunto 2: " + conjunto2.aStringConjunto());

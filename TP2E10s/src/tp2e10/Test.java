@@ -1,11 +1,8 @@
-package tp2e7;
-
-import java.util.ArrayList;
+package tp2e10;
 
 public class Test {
 
     public static void main(String[] args) {
-    	
         // Crear instancia de EmpleadoAsalariado
         EmpleadoAsalariado empleadoAsalariado = new EmpleadoAsalariado();
         empleadoAsalariado.setNombre("Juan");
@@ -60,48 +57,6 @@ public class Test {
         System.out.println("Porcentaje de Comisión: " + empleadoBaseMasComision.getPorcentajes() + "%");
         System.out.println("Ventas Brutas: " + empleadoBaseMasComision.getVentas());
         System.out.println("Salario Base: " + empleadoBaseMasComision.getSalarioBase());
-    
-    
-        //Ejercicio 10 Cargar una lista de empleados utilizando las clases creadas en el ejercicio 7 y 
-        //emitir un listado de todos los empleados y sus salarios.
-        //Adicionar un 10% de incremento en el listado para los EmpleadoBaseMasComision.
-        
-        ArrayList<Empleado> empleados = new ArrayList<>();
-        System.out.println();
-        System.out.println("EJERCICIO10");
-        System.out.println();
-        empleados.add(empleadoAsalariado);
-        empleados.add(empleadoPorComision);
-        empleados.add(empleadoBaseMasComision);
-        empleados.add(empleadoPorHora);
-        
-        for (Empleado empleado : empleados) {
-            System.out.println("Nombre: " + empleado.getNombre());
-            System.out.println("Documento: " + empleado.getDocumento());
-            
-            // Verificar el tipo de empleado y calcular el salario
-            if (empleado instanceof EmpleadoAsalariado) {
-                EmpleadoAsalariado emp = (EmpleadoAsalariado) empleado;
-                System.out.println("Salario: " + emp.getSalario());
-            } else if (empleado instanceof EmpleadoPorComision) {
-                EmpleadoPorComision emp = (EmpleadoPorComision) empleado;
-                float salario = emp.getPorcentajes() * emp.getVentas() / 100;
-                System.out.println("Salario: " + salario);
-            } else if (empleado instanceof EmpleadoBaseMasComision) {
-                EmpleadoBaseMasComision emp = (EmpleadoBaseMasComision) empleado;
-                float salario = emp.getSalarioBase() + (emp.getPorcentajes() * emp.getVentas() / 100);
-                // Aplicar un 10% de incremento para los EmpleadoBaseMasComision
-                System.out.println("Salario sin aumento: " + salario);
-                salario *= 1.1;
-                System.out.println("Salario: " + salario);
-            } else if (empleado instanceof EmpleadoPorHora) {
-                EmpleadoPorHora emp = (EmpleadoPorHora) empleado;
-                float salario = emp.getHoras() * emp.getValor();
-                System.out.println("Salario: " + salario);
-            }
-            
-            System.out.println();
-        }
     }
 
 }
