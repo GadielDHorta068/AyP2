@@ -5,14 +5,15 @@ public class SinglyLinkedList<E> {
 	private static class Node<E>{
 		private E elemento;				//Referencia del elemento guardado en este nodo
 		private Node<E> siguiente;		//Referencia al siguiente nodo in la lista
+		
 		public Node (E e, Node<E> n) {
 			elemento = e;
 			siguiente = n;
 		}
-		public E getElemento() {return elemento;}
-		public Node<E> getSiguiente(){return siguiente;}
+		public E getElemento() {return elemento;}	//Devolver el elemento del nodo
+		public Node<E> getSiguiente(){return siguiente;}	//Devolver el siguiente nodo
 		
-		public void setSiguiente(Node<E> n) {siguiente = n;}
+		public void setSiguiente(Node<E> n) {siguiente = n;}	//Setear el siguiente nodo
 	}
 	/* -----------------Fin Nodo----------------*/
 	
@@ -21,17 +22,17 @@ public class SinglyLinkedList<E> {
 	private int size = 0;			//Numero de nodos en la lista
 	
 	public SinglyLinkedList() {};	//Constructor vacio
-	public int size() {return size;}
-	public boolean isEmpty() {return size == 0;}
+	public int size() {return size;}//Devolver el tamanio de la lista
+	public boolean isEmpty() {return size == 0;}	//Esta vacio?
 	public E first() {				//Devolver primer elemento
 		if(isEmpty()) {
-			return null;
+			return null;			//Si la lista esta vacia no hay primer elemento
 		}
-		return head.getElemento();
+		return head.getElemento();	//Devolver el head
 	}
 	public E last() {				//Devolver ultimo elemento
 		if(isEmpty()) {
-			return null;
+			return null;			//Si la lista esta vacia no hay ultimo
 		}
 		return tail.getElemento();
 	}
@@ -59,30 +60,30 @@ public class SinglyLinkedList<E> {
 		if (isEmpty()) {			//Nada a remover
 			return null;	
 		}
-		E answer = head.getElemento();
+		E first = head.getElemento();
 		head = head.getSiguiente();
 		size--;
 		if (size == 0) {
 			tail = null;			//Si ahora la lista esta vacia
 		}
-		return answer;
+		return first;
 	}
 	
 	
 	
     /* Inserta el elemento e en la posicion n de la lista */
-    public void addPos(E e, int n) throws IndexOutOfBoundsException {
-    	if (0>n || n>size) {
+    public void addPos(E e, int posicion) throws IndexOutOfBoundsException {
+    	if (0>posicion || posicion>size) {
     		throw new IndexOutOfBoundsException("posicion no valida");
     	}
     	
-    	if(n==0) {						// Si la posición es 0,addFirst
+    	if(posicion==0) {						// Si la posición es 0,addFirst
     		addFirst(e);
-    	}else if (n== size) {			// Si la posición es el tamaño, addLast
+    	}else if (posicion== size) {			// Si la posición es el tamaño, addLast
     		addLast(e);					
     	}else {							// Inserta el elemento en la posición especificada
     		Node<E> current = head;
-    		for (int i=0; i< n-1; i++) {
+    		for (int i=0; i< posicion-1; i++) {
     			current = current.getSiguiente();
     		}
     		current.setSiguiente(new Node<>(e, current.getSiguiente()));
@@ -117,20 +118,20 @@ public class SinglyLinkedList<E> {
 
     /* Elimina elemento que se encuentra en la posicion n de la lista */
     /* Retorna NULL si no es una posicion valida */
-    public E removePos(int n) throws IndexOutOfBoundsException {
-        if (n < 0 || n >= size) {
+    public E removePos(int posicion) throws IndexOutOfBoundsException {
+        if (posicion < 0 || posicion >= size) {
             throw new IndexOutOfBoundsException("Posición inválida");
         }
-        if (n == 0) {	//Si la pos es 0, removeFirst
+        if (posicion == 0) {	//Si la pos es 0, removeFirst
             return removeFirst();
         } else {		//Eliminar el elemento de la pos especificada
             Node<E> current = head;
-            for (int i = 0; i < n - 1; i++) {
+            for (int i = 0; i < posicion - 1; i++) {
                 current = current.getSiguiente();
             }
             E removedElement = current.getSiguiente().getElemento();
             current.setSiguiente(current.getSiguiente().getSiguiente());
-            if (n == size - 1) {	//Si el eliminado es ultimo, ajusta tail
+            if (posicion == size - 1) {	//Si el eliminado es ultimo, ajusta tail
                 tail = current;
             }
             size--;	//Bajar tamanio de lista
@@ -139,7 +140,7 @@ public class SinglyLinkedList<E> {
     }
 
     /* Inserta todos los elementos de la Lista l al final de la lista */
-    public void concatenate(SinglyLinkedList l) {
+    public void concatenate(SinglyLinkedList<E> l) {
         if (l.isEmpty()) {	//Si l esta vacio, no hacer nada
             return;
         }
@@ -205,4 +206,21 @@ public class SinglyLinkedList<E> {
         }
         return newList;
     }
+    
+    @Override
+    public String toString() {
+    	StringBuilder string = new StringBuilder();
+    	string.append("[");
+    	Node<E> current = head;
+    	while (current != null) {
+    		string.append(current.getElemento());
+    		if (current.getSiguiente() != null) {
+    			string.append(" - ");
+    		}
+    		current= current.getSiguiente();
+    	}
+    	string.append("]");
+    	
+    	return string.toString();
+    } 
 }
