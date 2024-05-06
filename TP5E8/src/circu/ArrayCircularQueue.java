@@ -41,18 +41,6 @@ public class ArrayCircularQueue<E> implements CircularQueue<E>{
 	}
 
 	@Override
-	public void addLast(E e) {
-		// TODO Auto-generated method stub
-		if (isFull()) {
-			System.out.println("la cola esta llena");
-			return;
-		}
-        rear = (rear + 1) % maxSize;
-        queueArray[rear] = e;
-        currentSize++;	
-	}
-
-	@Override
 	public E removeFirst() {
 		// TODO Auto-generated method stub
 		if (isEmpty()) {
@@ -65,12 +53,6 @@ public class ArrayCircularQueue<E> implements CircularQueue<E>{
 		return temp;
 	}
 
-	@Override
-	public E removeLast() {
-		// TODO Auto-generated method stub
-		currentSize--;
-		return null;
-	}
 
 	@Override
 	public E first() {

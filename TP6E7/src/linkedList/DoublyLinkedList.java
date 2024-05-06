@@ -1,4 +1,4 @@
-package tp5e1;
+package linkedList;
 
 public class DoublyLinkedList<E> {
 
@@ -20,15 +20,15 @@ public class DoublyLinkedList<E> {
 		public void setNext(Node<E> n) { next = n; }
 	}
 	
-	private Node<E> header; 
-	private Node<E> trailer; 
-	private int size = 0; 
+	private Node<E> header; // header sentinel
+	private Node<E> trailer; // trailer sentinel
+	private int size = 0; // number of elements in the list
 	
 	public DoublyLinkedList( ) {
 	
-		header = new Node<>(null, null, null); 
-		trailer = new Node<>(null, header, null); 
-		header.setNext(trailer);
+		header = new Node<>(null, null, null); // create header
+		trailer = new Node<>(null, header, null); // trailer is preceded by header
+		header.setNext(trailer); // header is followed by trailer
 	 
 	}
 	public E getFirst() {return header.element;}
@@ -36,30 +36,30 @@ public class DoublyLinkedList<E> {
 	public boolean isEmpty( ) { return size == 0; }
 	public E first( ) {
 		if (isEmpty( )) return null;
-		return header.getNext( ).getElement( );
+		return header.getNext( ).getElement( ); // first element is beyond header
 	 }
 	 
 	 public E last( ) {
 		 if (isEmpty( )) return null;
-		 return trailer.getPrev( ).getElement( );
+		 return trailer.getPrev( ).getElement( ); // last element is before trailer
 	}
 	 
 	 public void addFirst(E e) {
-		 addBetween(e, header, header.getNext( ));	  
+		 addBetween(e, header, header.getNext( )); // place just after the header	  
 	 }
 		 
 		 
 	 public void addLast(E e) {
-		 addBetween(e, trailer.getPrev( ), trailer); 
+		 addBetween(e, trailer.getPrev( ), trailer); // place just before the trailer
 	 }	
 	 public E removeFirst( ) {
-		 if (isEmpty( )) return null; 
-		 return remove(header.getNext( ));  
+		 if (isEmpty( )) return null; // nothing to remove
+		 return remove(header.getNext( )); // first element is beyond header  
 	 }
 
 	 public E removeLast( ) {
-		  if (isEmpty( )) return null; 
-		  return remove(trailer.getPrev( )); 
+		  if (isEmpty( )) return null; // nothing to remove
+		  return remove(trailer.getPrev( )); // last element is before trailer
 	 }	  
 	 private void addBetween(E e, Node<E> predecessor, Node<E> successor) {
 		  

@@ -1,6 +1,6 @@
 package circu;
 
-public interface CircularQueue<E> extends Deque<E>{
+public interface CircularQueue<E> extends Queue<E>{
 
 	public void rotate();
 }
