@@ -24,6 +24,8 @@ package net.datastructures;
 
 import java.util.Iterator;
 
+import tp10e6.Position;
+
 /**
  * An interface for positional lists.
  * @author Michael T. Goodrich
@@ -148,4 +150,6 @@ public interface PositionalList<E> extends Iterable<E> {
   void addLast();
 
   void addBefore();
+  
+  int indexOf(Position<E> p);
 }
