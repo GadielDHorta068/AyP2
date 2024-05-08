@@ -34,14 +34,14 @@ public class complejo {
 	public String toString() {
 		return "(" + real + ", " + imaginario + ")";
 	}
-    public complejo multiplicar(double x) {
+    public complejo multiplicar(complejo c2) {
         complejo aux = new complejo();
-        aux.real = this.real * x;
-        aux.imaginario = this.imaginario * x;
+        aux.real = this.real * c2;
+        aux.imaginario = this.imaginario * c2;
         return aux;
     }
 
-    // Método dividir con otro número complejo
+    // Mï¿½todo dividir con otro nï¿½mero complejo
     public complejo dividir(complejo x) {
         complejo aux = new complejo();
         aux.real = (this.real * x.real + this.imaginario * x.imaginario) / (x.real * x.real + x.imaginario * x.imaginario);
@@ -49,7 +49,7 @@ public class complejo {
         return aux;
     }
 
-    // Método sumar otro número complejo
+    // Mï¿½todo sumar otro nï¿½mero complejo
     public complejo suma(complejo x) {
         complejo aux = new complejo();
         aux.real = this.real + x.real;
@@ -57,7 +57,7 @@ public class complejo {
         return aux;
     }
 
-    // Método restar otro número complejo
+    // Mï¿½todo restar otro nï¿½mero complejo
     public complejo resta(complejo x) {
         complejo aux = new complejo();
         aux.real = this.real - x.real;
