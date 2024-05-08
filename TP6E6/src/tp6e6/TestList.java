@@ -1,4 +1,4 @@
-package test;
+package tp6e6;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
