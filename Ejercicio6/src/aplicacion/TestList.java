@@ -18,7 +18,7 @@ public class TestList {
 		list.add(1, "Ana");
 		list.add(2, "Pedro");
 		list.add(3, null);
-		list.add(4, "Mar�a");
+		list.add(4, "Maria");
 		list.add(5, "Pedro");
 	}
 
@@ -26,7 +26,9 @@ public class TestList {
 	@Test
 	public void testClear() {
 		list.clear();
+		System.out.println(list.size());
 		assertEquals(list.size(), 0);
+		
 	}
 
 	@Test
