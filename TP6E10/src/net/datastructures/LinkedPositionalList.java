@@ -346,8 +346,8 @@ public class LinkedPositionalList<E> implements PositionalList<E> {
 		successor.setPrev(predecessor);
 		size--;
 		E answer = node.getElement();
-		node.setElement(null); // help with garbage collection
-		node.setNext(null); // and convention for defunct node
+		node.setElement(null); 
+		node.setNext(null); 
 		node.setPrev(null);
 		return answer;
 	}
@@ -409,8 +409,8 @@ public class LinkedPositionalList<E> implements PositionalList<E> {
 		public void remove() throws IllegalStateException {
 			if (recent == null)
 				throw new IllegalStateException("nothing to remove");
-			LinkedPositionalList.this.remove(recent); // remove from outer list
-			recent = null; // do not allow remove again until next is called
+			LinkedPositionalList.this.remove(recent); 
+			recent = null; 
 		}
 	} // ------------ end of nested PositionIterator class ------------
 

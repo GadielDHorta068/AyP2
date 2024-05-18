@@ -1,0 +1,26 @@
++----------------------+
+|      BinaryTree      |
++----------------------+
+| - root: TreeNode     |
++----------------------+
+| + insert(value: T)   |
+| + isEmpty(): boolean |
+| + preOrder(): void   |
+| + inOrder(): void    |
+| + postOrder(): void  |
+| + levelOrder(): void |
+| + getChildren(): List<TreeNode> |
+| + getHeight(): int   |
+| + getSibling(value: T): TreeNode|
+| + getDepth(value: T): int       |
++----------------------+
+
++----------------------+
+|      TreeNode        |
++----------------------+
+| - value: T           |
+| - left: TreeNode     |
+| - right: TreeNode    |
++----------------------+
+| + TreeNode(value: T) |
++----------------------+

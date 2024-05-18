@@ -17,9 +17,9 @@ public class TestList {
 		list.add(0, "Juan");
 		list.add(1, "Ana");
 		list.add(2, "Pedro");
-		list.add(3, null);
-		list.add(4, "Maria");
-		list.add(5, "Pedro");
+		//list.add(3, null);
+		list.add(3, "Maria");
+		list.add(4, "Pedro");
 	}
 
 
