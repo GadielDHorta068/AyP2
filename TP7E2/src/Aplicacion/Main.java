@@ -134,7 +134,7 @@ public class Main {
             case "/":
                 return left / right;
             default:
-                throw new IllegalArgumentException("Invalid operator: " + operator);
+                throw new IllegalArgumentException("Operador invalido: " + operator);
         }
     }
 }

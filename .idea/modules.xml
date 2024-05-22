@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/TP7E6/TP7E6.iml" filepath="$PROJECT_DIR$/TP7E6/TP7E6.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TP7E7/TP7E7.iml" filepath="$PROJECT_DIR$/TP7E7/TP7E7.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TP8E1/TP8E1.iml" filepath="$PROJECT_DIR$/TP8E1/TP8E1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TP8E2/TP8E2.iml" filepath="$PROJECT_DIR$/TP8E2/TP8E2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/eclipse-workspace.iml" filepath="$PROJECT_DIR$/.idea/eclipse-workspace.iml" />
+    </modules>
+  </component>
+</project>
