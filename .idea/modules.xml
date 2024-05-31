@@ -2,11 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Parcial2-2023/Parcial2-2023.iml" filepath="$PROJECT_DIR$/Parcial2-2023/Parcial2-2023.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Parcial2-2024/Parcial2-2024.iml" filepath="$PROJECT_DIR$/Parcial2-2024/Parcial2-2024.iml" />
       <module fileurl="file://$PROJECT_DIR$/TP7E6/TP7E6.iml" filepath="$PROJECT_DIR$/TP7E6/TP7E6.iml" />
       <module fileurl="file://$PROJECT_DIR$/TP7E7/TP7E7.iml" filepath="$PROJECT_DIR$/TP7E7/TP7E7.iml" />
       <module fileurl="file://$PROJECT_DIR$/TP8E1/TP8E1.iml" filepath="$PROJECT_DIR$/TP8E1/TP8E1.iml" />
       <module fileurl="file://$PROJECT_DIR$/TP8E2/TP8E2.iml" filepath="$PROJECT_DIR$/TP8E2/TP8E2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/eclipse-workspace.iml" filepath="$PROJECT_DIR$/.idea/eclipse-workspace.iml" />
+      <module fileurl="file://$PROJECT_DIR$/parcial2-2018/parcial2-2018.iml" filepath="$PROJECT_DIR$/parcial2-2018/parcial2-2018.iml" />
+      <module fileurl="file://$PROJECT_DIR$/practica_arbol_map/practica_arbol_map.iml" filepath="$PROJECT_DIR$/practica_arbol_map/practica_arbol_map.iml" />
     </modules>
   </component>
 </project>

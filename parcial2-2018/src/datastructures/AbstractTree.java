@@ -20,12 +20,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.datastructures;
+package datastructures;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;         // for use as snapshot iterator
+import java.util.List;
 import java.util.Stack;
-import java.util.ArrayList;    // for use as snapshot iterator
 
 /**
  * An abstract base class providing some functionality of the Tree interface.
@@ -250,4 +250,39 @@ public abstract class AbstractTree<E> implements Tree<E> {
 		}
 	    return snapshot;
 	  }
+  /**
+   * Retorna una lista con todos los nodos externos
+   */
+  public List<Position<E>> externals(){
+    List<Position<E>> lista = new ArrayList<>();
+    Iterator<E> iter = this.iterator();
+
+    for (Position<E> p: positions()){
+      if(isExternal(p)){
+        lista.add(p);
+      }
+    }
+    return lista;
+  }
 }
+
+  /**
+   * Retorna un map de todas las ramas de un árbol. La clave es el nodo externo y
+   * la rama una lista de todos los nodos internos hasta llegar a la raíz
+   */
+  public Map<Position<E>, List<Position<E>>> branchMap() {
+    Map<Position<E>, List<Position<E>>> map = new HashMap<>();
+    List<Position<E>> externals = externals();
+
+    for (Position<E> external : externals) {
+      List<Position<E>> path = new ArrayList<>();
+      Position<E> current = external;
+      while (current != null) {
+        path.add(current);
+        current = parent(current);
+      }
+      map.put(external, path);
+    }
+
+    return map;
+  }

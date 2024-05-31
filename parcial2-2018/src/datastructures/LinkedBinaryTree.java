@@ -20,7 +20,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.datastructures;
+package datastructures;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Concrete implementation of a binary tree using a node-based, linked structure.
@@ -333,5 +336,47 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
       }
       return equalsSubtree(thisNode.getLeft(), otherNode.getLeft()) && equalsSubtree(thisNode.getRight(), otherNode.getRight());
   }
-  
+
+  public boolean lleno() {
+    return isFull(root);
+  }
+
+  private boolean isFull(Node<E> node) {
+    if (node == null) {
+      return true;
+    }
+    if ((node.getLeft() == null && node.getRight() != null) ||
+            (node.getLeft() != null && node.getRight() == null)) {
+      return false;
+    }
+    return isFull(node.getLeft()) && isFull(node.getRight());
+  }
+  public boolean semejante(LinkedBinaryTree<E> t){
+    if (this.size() != t.size()) {
+      return false;
+    }
+
+    Iterable<Position<E>> actual =postorder();
+    Iterable<Position<E>> comparado =postorder();
+
+    ArrayList<Position<E>> a = new ArrayList<>();
+    ArrayList<E> b = new ArrayList<>();
+    int i = 0;
+    for (Position<E> e : actual){
+      a.add(i, e);
+      i++;
+    }
+    i = 0;
+    for (Position<E> e : comparado){
+      a.add(i, e);
+      i++;
+    }
+    
+    for (Position<E> e : a){
+      if (!b.contains(e.getElement())){
+        return false;
+      }
+    }
+    return true;
+  }
 } //----------- end of LinkedBinaryTree class -----------

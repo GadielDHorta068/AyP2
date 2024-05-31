@@ -20,10 +20,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.datastructures;
+package datastructures;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An abstract base class providing some functionality of the BinaryTree interface.
@@ -122,4 +122,45 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E>
   public Iterable<Position<E>> positions() {
     return inorder();
   }
+  /**
+   * Verifica si el árbol t es un árbol completo
+   *
+   * @return true si es un árbol completo o false si no lo es
+   */
+  public boolean complete(){
+    if (isEmpty()){
+      return true;
+    }
+
+    List<Position<E>> queue = new ArrayList<>();
+    queue.add(root());
+
+    boolean hoja = false;
+
+    while (!queue.isEmpty()){
+      Position<E> current = queue.remove(0);
+
+      //revisar hijo izquierdo
+      if(left(current) != null){
+        if (hoja){
+          return false;
+        }
+        queue.add(left(current));
+      }else{
+        hoja =false;
+      }
+
+      //revisar derecho
+      if (right(current) != null) {
+        if (hoja){
+          return false;
+        }
+        queue.add(right(current));
+      }else {
+        hoja = true;
+      }
+    }
+    return true;
+  }
+
 }

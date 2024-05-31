@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Main {
 
-    private static final Set<String> RESERVED_WORDS = new HashSet<>(Arrays.asList(
+    private static final Set<String> PALABRAS_RESERVADAS = new HashSet<>(Arrays.asList(
             "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class",
             "const", "continue", "default", "do", "double", "else", "enum", "extends", "final",
             "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int",
@@ -33,7 +33,7 @@ public class Main {
             while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split("\\W+");
                 for (String token : tokens) {
-                    if (RESERVED_WORDS.contains(token)) {
+                    if (PALABRAS_RESERVADAS.contains(token)) {
                         Integer count = wordCountMap.get(token);
                         if (count == null) {
                             wordCountMap.put(token, 1);
@@ -48,7 +48,7 @@ public class Main {
         }
 
         // Print the occurrences of each reserved word
-        System.out.println("Reserved word occurrences:");
+        System.out.println("Cantidad de palabras reservadas:");
         for (String word : wordCountMap.keySet()) {
             System.out.println(word + ": " + wordCountMap.get(word));
         }
