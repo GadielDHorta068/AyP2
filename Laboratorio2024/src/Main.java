@@ -9,8 +9,8 @@ public class Main {
 
         //Creo nodos
         //Hacer algoritmo que asigne ip y las mac
-        Computadora pc1 = new Computadora("pc1", "192.168.0.1", Utilidades.generarMAC(), true, "Habitacion");
-        Computadora pc2 = new Computadora("pc2", "192.168.0.2", Utilidades.generarMAC(), true, "Oficina");
+        Computadora pc1 = new Computadora("pc1", "000.000.0.000", Utilidades.generarMAC(), true, "Habitacion");
+        Computadora pc2 = new Computadora("pc2", "000.000.0.000", Utilidades.generarMAC(), true, "Oficina");
         Router router1 = new Router("Router1", "192.168.0.254", Utilidades.generarMAC(), true, "Oficina", "Cisco", "1.5.1.13 ", 450);
 
         // Agregar nodos a la red
@@ -19,8 +19,8 @@ public class Main {
         red.agregarNodo(router1);
 
         // Creo conexión
-        Conexion conexion = new Conexion(pc1, router1, "WAN", 450, 2, true, 0.01);
-        Conexion conexion2 = new Conexion(pc2, router1, "UTP", 100, 15, true, 0.5);
+        Conexion conexion = new Conexion(router1, pc1, "WAN", 450, 2, true, 0.01);
+        Conexion conexion2 = new Conexion(router1, pc2, "UTP", 100, 15, true, 0.5);
 
         // Agreg0 conexión a la red
         red.agregarConexion(conexion);

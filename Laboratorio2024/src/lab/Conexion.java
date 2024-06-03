@@ -11,6 +11,7 @@ public class Conexion {
 
 
     public Conexion(Nodo sourceNode, Nodo targetNode, String tipoConexion, int bandwidth, int latencia, Boolean status, double errorRate) {
+        Utilidades.asignarDireccion(sourceNode, targetNode);
         this.sourceNode = sourceNode;
         this.targetNode = targetNode;
         this.tipoConexion = tipoConexion;

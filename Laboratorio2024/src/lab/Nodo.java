@@ -8,6 +8,7 @@ public class Nodo {
     String macAddress;
     Boolean status;
     String ubicacion;
+    int ipLibre;
 
     public Nodo(String id, String ipAddress, String macAddress, Boolean status, String ubicacion) {
         this.id = id;
@@ -73,5 +74,9 @@ public class Nodo {
     @Override
     public String toString() {
         return "ID: " + id + ", IP: " + ipAddress + ", MAC: " + macAddress + ", Status: " + status + ", Ubicación: " + ubicacion;
+    }
+
+    public int nuevaIP() {
+        return ipLibre;
     }
 }

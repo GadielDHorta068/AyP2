@@ -18,4 +18,15 @@ public class Utilidades {
         }
         return mac.toString().toUpperCase();
     }
+
+    public static void asignarDireccion(Nodo router, Nodo pc) {
+        String[] segmentos = router.getIpAddress().split("\\.");
+        if (segmentos.length != 4) {
+            throw new IllegalArgumentException("Dirección IP inválida");
+        }
+        int ultimoSegmento = Integer.parseInt(segmentos[3]);
+        ultimoSegmento = router.nuevaIP();
+        segmentos[3] = String.valueOf(ultimoSegmento);
+        pc.setIpAddress(String.join(".", segmentos));
+    }
 }

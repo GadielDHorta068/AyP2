@@ -42,7 +42,7 @@ public class Red {
         System.out.println();
         for (Nodo nodo : nodos.values()) {
             if (nodo.ipAddress.equals(ipAddress)) {
-                System.out.println(("El nodo " + ipAddress + " existe"));
+                // System.out.println(("El nodo " + ipAddress + " existe"));
                 if (nodo.status.equals(true)) {
                     return true;
                 }
