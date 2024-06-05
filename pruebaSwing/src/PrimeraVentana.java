@@ -37,7 +37,7 @@ public class PrimeraVentana extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Abrir la segunda ventana
-                for (int i = 0; i < 1000000; i++) {
+                for (int i = 0; i < 100; i++) {
                     Grafico segundaVentana = new Grafico();
                     segundaVentana.setVisible(true);
                 }

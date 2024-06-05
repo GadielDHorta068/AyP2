@@ -1,4 +1,4 @@
-package lab;
+package lab.clases;
 
 public class Router extends Nodo {
     String modelo;

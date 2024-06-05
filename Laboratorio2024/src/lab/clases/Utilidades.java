@@ -1,4 +1,4 @@
-package lab;
+package lab.clases;
 
 import java.util.Random;
 
@@ -11,7 +11,7 @@ public class Utilidades {
         //volverlo humanamente legible segun stackoverflow
         StringBuilder mac = new StringBuilder(18);
         for (byte b : macAddr) {
-            if (!mac.isEmpty()) {
+            if (mac.length() == 0) {
                 mac.append(":");
             }
             mac.append(String.format("%02x", b));

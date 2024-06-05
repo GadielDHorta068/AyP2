@@ -1,4 +1,4 @@
-package lab;
+package lab.clases;
 
 import java.util.Objects;
 
@@ -73,10 +73,14 @@ public class Nodo {
 
     @Override
     public String toString() {
-        return "ID: " + id + ", IP: " + ipAddress + ", MAC: " + macAddress + ", Status: " + status + ", Ubicación: " + ubicacion;
+        return "ID: " + id + ", IP: " + ipAddress + ", MAC: " + macAddress + ", Status: " + status + ", Ubicaciï¿½n: " + ubicacion;
     }
 
     public int nuevaIP() {
         return ipLibre;
+    }
+
+    public String toCSV() {
+        return id + "," + ipAddress + "," + macAddress + "," + status + "," + ubicacion;
     }
 }

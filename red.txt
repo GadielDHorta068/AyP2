@@ -1,0 +1,7 @@
+Router1,192.168.0.254,:B1FA920E5D32,true,Oficina
+Modem,192.168.0.0,:AFA09BEB5365,true,Oficina
+pc2,192.168.0.2,:F5B525B78E92,true,Oficina
+pc1,192.168.0.1,:D89EE9416199,true,Habitacion
+Router1,pc1,WAN,450,2,true,0.01
+Router1,pc2,UTP,100,15,true,0.5
+Modem,Router1,UTP,1000,0,true,0.0

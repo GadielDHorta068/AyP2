@@ -1,4 +1,4 @@
-package lab;
+package lab.clases;
 
 public class Conexion {
     Nodo sourceNode;
@@ -80,5 +80,9 @@ public class Conexion {
     @Override
     public String toString() {
         return "Source: " + sourceNode.id + ", Target: " + targetNode.id + ", Tipo: " + tipoConexion + ", Bandwidth: " + bandwidth + " Mbps, Latencia: " + latencia + " ms, Status: " + status + ", Error Rate: " + errorRate + " %";
+    }
+
+    public String toCSV() {
+        return sourceNode.id + "," + targetNode.id + "," + tipoConexion + "," + bandwidth + "," + latencia + "," + status + "," + errorRate;
     }
 }
