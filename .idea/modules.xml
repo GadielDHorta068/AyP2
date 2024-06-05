@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/eclipse-workspace.iml" filepath="$PROJECT_DIR$/.idea/eclipse-workspace.iml" />
       <module fileurl="file://$PROJECT_DIR$/parcial2-2018/parcial2-2018.iml" filepath="$PROJECT_DIR$/parcial2-2018/parcial2-2018.iml" />
       <module fileurl="file://$PROJECT_DIR$/practica_arbol_map/practica_arbol_map.iml" filepath="$PROJECT_DIR$/practica_arbol_map/practica_arbol_map.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pruebaSwing/pruebaSwing.iml" filepath="$PROJECT_DIR$/pruebaSwing/pruebaSwing.iml" />
     </modules>
   </component>
 </project>

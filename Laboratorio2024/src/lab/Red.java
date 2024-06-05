@@ -1,8 +1,6 @@
 package lab;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,11 +28,20 @@ public class Red {
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                //save some sh**
+
             }
         } catch (IOException e) {
             System.out.println("Fallo la carga del archivo");
             e.printStackTrace();
+        }
+    }
+
+    public void guardarRed() {
+        try {
+            OutputStream output = new FileOutputStream("red.bin");
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -65,5 +72,13 @@ public class Red {
         for (Conexion conexion : conexiones) {
             System.out.println(conexion.toString());
         }
+    }
+
+    public Map<String, Nodo> getNodos() {
+        return nodos;
+    }
+
+    public ArrayList<Conexion> getConexiones() {
+        return conexiones;
     }
 }
