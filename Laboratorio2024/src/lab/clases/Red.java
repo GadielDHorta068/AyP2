@@ -26,6 +26,15 @@ public class Red {
         conexiones.add(conexion);
     }
 
+    public void eliminarNodo(String nodoId) {
+        nodos.remove(nodoId);
+        conexiones.removeIf(conexion -> conexion.getSourceNode().getId().equals(nodoId) || conexion.getTargetNode().getId().equals(nodoId));
+    }
+
+    public void eliminarConexion(String sourceId, String targetId) {
+        conexiones.removeIf(conexion -> conexion.getSourceNode().getId().equals(sourceId) && conexion.getTargetNode().getId().equals(targetId));
+    }
+
     public void imprimirNodos() {
         System.out.println("Lista de Nodos:");
         for (Nodo nodo : nodos.values()) {
@@ -50,7 +59,6 @@ public class Red {
     }
 
     public static Red cargarRed(String archivo) {
-        System.out.println("pip pip red cargada (ponele)");
         return null;
     }
 
@@ -79,17 +87,7 @@ public class Red {
 
     public List<String> traceroute(String ipAddress) {
         List<String> path = new ArrayList<>();
-        // Implementar lógica para encontrar el camino hacia el nodo con la IP dada
-        // Esto puede implicar buscar en el grafo de conexiones
-
         return path;
     }
 
-    public List<Conexion> obtenerArbolExpansionMinima() {
-        List<Conexion> arbol = new ArrayList<>();
-        // Implementar el algoritmo de Kruskal o Prim para encontrar el árbol de expansión mínima
-        // Este ejemplo utiliza Kruskal
-
-        return arbol;
-    }
 }
