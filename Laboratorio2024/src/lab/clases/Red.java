@@ -1,8 +1,5 @@
 package lab.clases;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,23 +55,13 @@ public class Red {
         return false;
     }
 
-    public static Red cargarRed(String archivo) {
-        return null;
-    }
-
-    public static void guardarRed(String archivo) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
-
-            for (Nodo nodo : nodos.values()) {
-                bw.write(nodo.toCSV() + "\n");
+    public Nodo buscar(String id) {
+        for (Nodo nodo : nodos.values()) {
+            if (nodo.getId().equals(id) && nodo.getStatus()) {
+                return nodo;
             }
-
-            for (Conexion conexion : conexiones) {
-                bw.write(conexion.toCSV() + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        return null;
     }
 
     public Map<String, Nodo> getNodos() {

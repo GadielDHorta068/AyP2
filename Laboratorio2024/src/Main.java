@@ -12,7 +12,7 @@ public class Main extends JFrame {
         //Hacer algoritmo que asigne ip y las mac
         Computadora pc1 = new Computadora("pc1", "000.000.0.000", Utilidades.generarMAC(), true, "Habitacion");
         Computadora pc2 = new Computadora("pc2", "000.000.0.000", Utilidades.generarMAC(), true, "Oficina");
-        Router router1 = new Router("Router1", "192.168.0.254", Utilidades.generarMAC(), true, "Oficina", "Cisco", "1.5.1.13 ", 450);
+        Router router1 = new Router("Router", "192.168.0.254", Utilidades.generarMAC(), true, "Oficina", "Cisco", "1.5.1.13 ", 450);
         Router modem = new Router("Modem", "192.168.0.0", Utilidades.generarMAC(), true, "Oficina", "RedUno", "1.0 ", 3500);
 
         // Agregar nodos a la red

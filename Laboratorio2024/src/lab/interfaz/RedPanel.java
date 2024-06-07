@@ -1,10 +1,13 @@
 package lab.interfaz;
 
 import lab.clases.*;
+import lab.filemanager.CargarRed;
+import lab.filemanager.GuardarRed;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +44,11 @@ public class RedPanel extends JPanel {
 
         JButton cargarButton = new JButton("Cargar Red");
         cargarButton.addActionListener(_ -> {
-            cargarRed();
+            try {
+                cargarRed();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println("Red cargada");
         });
         botonesPanel.add(cargarButton);
@@ -136,20 +143,20 @@ public class RedPanel extends JPanel {
         int option = fileChooser.showSaveDialog(this);
         if (option == JFileChooser.APPROVE_OPTION) {
             String archivo = fileChooser.getSelectedFile().getAbsolutePath();
-            Red.guardarRed(archivo + ".txt");
+            GuardarRed.guardarRed(archivo + ".txt", red);
             JOptionPane.showMessageDialog(this, "Red guardada en " + archivo, "Guardar Red", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    private void cargarRed() {
+    private void cargarRed() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         int option = fileChooser.showOpenDialog(this);
         if (option == JFileChooser.APPROVE_OPTION) {
             String archivo = fileChooser.getSelectedFile().getAbsolutePath();
-            Red red = Red.cargarRed(archivo);
-            if (red != null) {
-                cargarDatosEnTablas(red);
-            }
+            Red red = CargarRed.cargarRed(archivo);
+            red.imprimirNodos();
+            red.imprimirConexiones();
+            cargarDatosEnTablas(red);
             JOptionPane.showMessageDialog(this, "Red cargada desde " + archivo, "Cargar Red", JOptionPane.INFORMATION_MESSAGE);
         }
     }

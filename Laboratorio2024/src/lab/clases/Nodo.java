@@ -81,6 +81,16 @@ public class Nodo {
     }
 
     public String toCSV() {
+        if (id.startsWith("Router") || id.startsWith("Modem")) {
+            return getRouterToCSV();
+        }
         return id + "," + ipAddress + "," + macAddress + "," + status + "," + ubicacion;
+    }
+
+    public String getRouterToCSV() {
+        if (this instanceof Router router) {
+            return id + "," + ipAddress + "," + macAddress + "," + status + "," + ubicacion + "," + router.getModelo() + "," + router.getFirmware() + "," + router.getThroughput();
+        }
+        return null;
     }
 }

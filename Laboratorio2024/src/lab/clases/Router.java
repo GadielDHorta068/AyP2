@@ -1,5 +1,6 @@
 package lab.clases;
 
+
 public class Router extends Nodo {
     String modelo;
     String firmware;
