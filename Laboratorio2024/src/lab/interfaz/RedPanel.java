@@ -1,5 +1,6 @@
 package lab.interfaz;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import lab.clases.*;
 import lab.filemanager.CargarRed;
 import lab.filemanager.GuardarRed;
@@ -7,6 +8,9 @@ import lab.filemanager.GuardarRed;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,13 @@ public class RedPanel extends JPanel {
     public RedPanel(Red red) {
         this.red = red;
         setLayout(new BorderLayout());
+
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+        applyCustomFont("Laboratorio2024/src/lab/interfaz/FiraMonoNerdFont-Medium.otf");
 
         // Panel de nodos
         JPanel nodosPanel = new JPanel(new BorderLayout());
@@ -100,7 +111,7 @@ public class RedPanel extends JPanel {
 
     private void cargarDatosEnTablas(Red red) {
         // Cargar nodos en la tabla
-        String[] nodosColumnNames = {"ID", "IP Address", "MAC Address", "Status", "Ubicacion/Marca", "Firmware/Capacidad"};
+        String[] nodosColumnNames = {"ID", "IP Address", "MAC Address", "Status", "Ubicación", "Marca", "Firmware", "Capacidad"};
         DefaultTableModel nodosModel = new DefaultTableModel(nodosColumnNames, 0);
         for (Nodo nodo : red.getNodos().values()) {
             List<String> fila = new ArrayList<>();
@@ -109,12 +120,18 @@ public class RedPanel extends JPanel {
             fila.add(nodo.getMacAddress());
             fila.add(nodo.getStatus() ? "Activo" : "Inactivo");
 
-            if (nodo instanceof Computadora pc) {
+            if (nodo instanceof Computadora) {
+                Computadora pc = (Computadora) nodo;
                 fila.add(pc.getUbicacion());
                 fila.add("");
-            } else if (nodo instanceof Router router) {
+                fila.add("");
+                fila.add("");
+            } else if (nodo instanceof Router) {
+                Router router = (Router) nodo;
                 fila.add(router.getUbicacion());
-                fila.add(router.getModelo() + " / " + router.getFirmware() + " / " + router.getThroughput());
+                fila.add(router.getModelo());
+                fila.add(router.getFirmware());
+                fila.add(String.valueOf(router.getModelo()));
             }
             nodosModel.addRow(fila.toArray());
         }
@@ -163,55 +180,99 @@ public class RedPanel extends JPanel {
 
     private void mostrarVentanaAgregarNodo() {
         JFrame agregarNodoFrame = new JFrame("Agregar Nodo");
-        agregarNodoFrame.setSize(400, 300);
-        agregarNodoFrame.setLocationRelativeTo(this);
+        agregarNodoFrame.setSize(400, 350);
+        agregarNodoFrame.setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel(new GridLayout(5, 2));
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
 
-        panel.add(new JLabel("ID:"));
-        JTextField idField = new JTextField();
-        panel.add(idField);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(new JLabel("ID:"), gbc);
 
-        panel.add(new JLabel("IP Address:"));
-        JTextField ipAddressField = new JTextField();
-        panel.add(ipAddressField);
+        gbc.gridx = 1;
+        JTextField idField = new JTextField(20);
+        panel.add(idField, gbc);
 
-        panel.add(new JLabel("Status:"));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(new JLabel("IP Address:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField ipField = new JTextField(20);
+        panel.add(ipField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(new JLabel("Status:"), gbc);
+
+        gbc.gridx = 1;
         JCheckBox statusCheckBox = new JCheckBox();
-        panel.add(statusCheckBox);
+        panel.add(statusCheckBox, gbc);
 
-        panel.add(new JLabel("Ubicacion/Marca:"));
-        JTextField ubicacionMarcaField = new JTextField();
-        panel.add(ubicacionMarcaField);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(new JLabel("Ubicación:"), gbc);
 
-        panel.add(new JLabel("Firmware/Capacidad:"));
-        JTextField firmwareCapacidadField = new JTextField();
-        panel.add(firmwareCapacidadField);
+        gbc.gridx = 1;
+        JTextField ubicacionField = new JTextField(20);
+        panel.add(ubicacionField, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        panel.add(new JLabel("Marca:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField marcaField = new JTextField(20);
+        panel.add(marcaField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        panel.add(new JLabel("Firmware:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField firmwareField = new JTextField(20);
+        panel.add(firmwareField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        panel.add(new JLabel("Capacidad:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField capacidadField = new JTextField(20);
+        panel.add(capacidadField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         JButton agregarButton = new JButton("Agregar");
-        agregarButton.addActionListener(_ -> {
-            String id = idField.getText();
-            String ipAddress = ipAddressField.getText();
-            boolean status = statusCheckBox.isSelected();
-            String ubicacionMarca = ubicacionMarcaField.getText();
-            String firmwareCapacidad = firmwareCapacidadField.getText();
+        agregarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String id = idField.getText();
+                String ipAddress = ipField.getText();
+                boolean status = statusCheckBox.isSelected();
+                String ubicacion = ubicacionField.getText();
+                String mac = Utilidades.generarMAC();
 
-            String macAddress = Utilidades.generarMAC();
-
-            if (id.startsWith("PC")) {
-                Computadora pc = new Computadora(id, ipAddress, macAddress, status, ubicacionMarca);
-                red.agregarNodo(pc);
-            } else {
-                Router router = new Router(id, ipAddress, macAddress, status, ubicacionMarca, firmwareCapacidad, "", 0);
-                red.agregarNodo(router);
+                if (id.startsWith("PC") || id.startsWith("pc")) {
+                    Computadora pc = new Computadora(id, ipAddress, mac, status, ubicacion);
+                    red.agregarNodo(pc);
+                } else {
+                    String marca = marcaField.getText();
+                    String firmware = firmwareField.getText();
+                    int capacidad = Integer.parseInt(capacidadField.getText());
+                    Router router = new Router(id, ipAddress, mac, status, ubicacion, marca, firmware, capacidad);
+                    red.agregarNodo(router);
+                }
+                cargarDatosEnTablas(red);
+                agregarNodoFrame.dispose();
             }
-
-            cargarDatosEnTablas(red);
-            agregarNodoFrame.dispose();
         });
-
-        panel.add(new JLabel());
-        panel.add(agregarButton);
+        panel.add(agregarButton, gbc);
 
         agregarNodoFrame.add(panel);
         agregarNodoFrame.setVisible(true);
@@ -229,66 +290,101 @@ public class RedPanel extends JPanel {
     }
 
     private void mostrarVentanaAgregarConexion() {
-        JFrame agregarConexionFrame = new JFrame("Agregar Conexion");
+        JFrame agregarConexionFrame = new JFrame("Agregar Conexión");
         agregarConexionFrame.setSize(400, 300);
-        agregarConexionFrame.setLocationRelativeTo(this);
+        agregarConexionFrame.setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel(new GridLayout(7, 2));
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
 
-        panel.add(new JLabel("Source ID:"));
-        JTextField sourceIdField = new JTextField();
-        panel.add(sourceIdField);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(new JLabel("Nodo Origen:"), gbc);
 
-        panel.add(new JLabel("Target ID:"));
-        JTextField targetIdField = new JTextField();
-        panel.add(targetIdField);
+        gbc.gridx = 1;
+        JTextField sourceField = new JTextField(20);
+        panel.add(sourceField, gbc);
 
-        panel.add(new JLabel("Tipo:"));
-        JTextField tipoField = new JTextField();
-        panel.add(tipoField);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(new JLabel("Nodo Destino:"), gbc);
 
-        panel.add(new JLabel("Bandwidth:"));
-        JTextField bandwidthField = new JTextField();
-        panel.add(bandwidthField);
+        gbc.gridx = 1;
+        JTextField targetField = new JTextField(20);
+        panel.add(targetField, gbc);
 
-        panel.add(new JLabel("Latencia:"));
-        JTextField latenciaField = new JTextField();
-        panel.add(latenciaField);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(new JLabel("Tipo:"), gbc);
 
-        panel.add(new JLabel("Status:"));
+        gbc.gridx = 1;
+        JTextField tipoField = new JTextField(20);
+        panel.add(tipoField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(new JLabel("Bandwidth:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField bandwidthField = new JTextField(20);
+        panel.add(bandwidthField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        panel.add(new JLabel("Latencia:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField latenciaField = new JTextField(20);
+        panel.add(latenciaField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        panel.add(new JLabel("Status:"), gbc);
+
+        gbc.gridx = 1;
         JCheckBox statusCheckBox = new JCheckBox();
-        panel.add(statusCheckBox);
+        panel.add(statusCheckBox, gbc);
 
-        panel.add(new JLabel("Error Rate:"));
-        JTextField errorRateField = new JTextField();
-        panel.add(errorRateField);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        panel.add(new JLabel("Error Rate:"), gbc);
 
+        gbc.gridx = 1;
+        JTextField errorRateField = new JTextField(20);
+        panel.add(errorRateField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         JButton agregarButton = new JButton("Agregar");
-        agregarButton.addActionListener(_ -> {
-            String sourceId = sourceIdField.getText();
-            String targetId = targetIdField.getText();
-            String tipo = tipoField.getText();
-            int bandwidth = Integer.parseInt(bandwidthField.getText());
-            int latencia = Integer.parseInt(latenciaField.getText());
-            boolean status = statusCheckBox.isSelected();
-            double errorRate = Double.parseDouble(errorRateField.getText());
+        agregarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String source = sourceField.getText();
+                String target = targetField.getText();
+                String tipo = tipoField.getText();
+                int bandwidth = Integer.parseInt(bandwidthField.getText());
+                int latencia = Integer.parseInt(latenciaField.getText());
+                boolean status = statusCheckBox.isSelected();
+                double errorRate = Double.parseDouble(errorRateField.getText());
 
-            Nodo sourceNode = red.getNodos().get(sourceId);
-            Nodo targetNode = red.getNodos().get(targetId);
+                Nodo sourceNode = red.buscar(source);
+                Nodo targetNode = red.buscar(target);
 
-            if (sourceNode != null && targetNode != null) {
-                Conexion conexion = new Conexion(sourceNode, targetNode, tipo, bandwidth, latencia, status, errorRate);
-                sourceNode.nuevaIP();
-                red.agregarConexion(conexion);
-                cargarDatosEnTablas(red);
-                agregarConexionFrame.dispose();
-            } else {
-                JOptionPane.showMessageDialog(agregarConexionFrame, "Source ID o Target ID no validos.", "Error", JOptionPane.ERROR_MESSAGE);
+                if (sourceNode != null && targetNode != null) {
+                    Conexion conexion = new Conexion(sourceNode, targetNode, tipo, bandwidth, latencia, status, errorRate);
+                    red.agregarConexion(conexion);
+                    cargarDatosEnTablas(red);
+                    agregarConexionFrame.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(agregarConexionFrame, "Nodos inválidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
-
-        panel.add(new JLabel());
-        panel.add(agregarButton);
+        panel.add(agregarButton, gbc);
 
         agregarConexionFrame.add(panel);
         agregarConexionFrame.setVisible(true);
@@ -314,6 +410,23 @@ public class RedPanel extends JPanel {
             }
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una conexion para eliminar.", "Eliminar Conexion", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void applyCustomFont(String fontPath) {
+        try {
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath)).deriveFont(12f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+
+            UIManager.put("Button.font", customFont);
+            UIManager.put("Label.font", customFont);
+            UIManager.put("Table.font", customFont);
+            UIManager.put("TableHeader.font", customFont);
+            UIManager.put("TextField.font", customFont);
+            UIManager.put("CheckBox.font", customFont);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
         }
     }
 }
