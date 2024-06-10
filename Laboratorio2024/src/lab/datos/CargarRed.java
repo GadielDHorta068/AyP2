@@ -1,6 +1,10 @@
-package lab.filemanager;
+package lab.datos;
 
-import lab.clases.*;
+import lab.logica.Red;
+import lab.modelo.Computadora;
+import lab.modelo.Conexion;
+import lab.modelo.Nodo;
+import lab.modelo.Router;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,7 +20,7 @@ public class CargarRed {
             //Primero cargo todos los nodos para evitar problemas en conexion
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
-                
+
                 if (datos.length >= 5) {
                     boolean status = Boolean.parseBoolean(datos[3]);
                     if (datos[0].startsWith("pc")) {

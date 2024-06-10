@@ -1,32 +1,36 @@
-import lab.clases.*;
 import lab.interfaz.RedPanel;
+import lab.logica.Red;
+import lab.logica.Utilidades;
+import lab.modelo.Computadora;
+import lab.modelo.Conexion;
+import lab.modelo.Router;
 
 import javax.swing.*;
 
 public class Main extends JFrame {
+    /**
+     * Este metodo crea una red para ser usada de ejemplo al abrir el programa, tambien puede ser usada para testing
+     *
+     * @return Red
+     */
     private Red crearRedDeEjemplo() {
-        //Creo una red
+
         Red red = new Red();
 
-        //Creo nodos
-        //Hacer algoritmo que asigne ip y las mac
         Computadora pc1 = new Computadora("pc1", "000.000.0.000", Utilidades.generarMAC(), true, "Habitacion");
         Computadora pc2 = new Computadora("pc2", "000.000.0.000", Utilidades.generarMAC(), true, "Oficina");
         Router router1 = new Router("Router", "192.168.0.254", Utilidades.generarMAC(), true, "Oficina", "Cisco", "1.5.1.13 ", 450);
         Router modem = new Router("Modem", "192.168.0.0", Utilidades.generarMAC(), true, "Oficina", "RedUno", "1.0 ", 3500);
 
-        // Agregar nodos a la red
         red.agregarNodo(pc1);
         red.agregarNodo(pc2);
         red.agregarNodo(router1);
         red.agregarNodo(modem);
 
-        // Creo conexión
         Conexion conexion = new Conexion(router1, pc1, "WAN", 450, 2, true, 0.01);
         Conexion conexion2 = new Conexion(router1, pc2, "UTP", 100, 15, true, 0.5);
         Conexion principal = new Conexion(modem, router1, "UTP", 1000, 0, true, 0.00);
 
-        // Agreg0 conexión a la red
         red.agregarConexion(conexion);
         red.agregarConexion(conexion2);
         red.agregarConexion(principal);
@@ -34,6 +38,9 @@ public class Main extends JFrame {
         return red;
     }
 
+    /**
+     * Configura la ventana donde se abrira la interfaz
+     */
     public Main() {
         setTitle("Gestor de redes Denebzera");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

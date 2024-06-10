@@ -1,9 +1,14 @@
 package lab.interfaz;
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import lab.clases.*;
-import lab.filemanager.CargarRed;
-import lab.filemanager.GuardarRed;
+import lab.datos.CargarRed;
+import lab.datos.GuardarRed;
+import lab.logica.Red;
+import lab.logica.Utilidades;
+import lab.modelo.Computadora;
+import lab.modelo.Conexion;
+import lab.modelo.Nodo;
+import lab.modelo.Router;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -51,7 +56,7 @@ public class RedPanel extends JPanel {
             cargarDatosEnTablas(red);
             System.out.println("Red refrescada");
         });
-        //botonesPanel.add(refreshButton);
+        botonesPanel.add(refreshButton);
 
         JButton cargarButton = new JButton("Cargar Red");
         cargarButton.addActionListener(_ -> {
@@ -70,6 +75,20 @@ public class RedPanel extends JPanel {
             System.out.println("Red Guardada");
         });
         botonesPanel.add(guardarButton);
+
+        JButton pingButton = new JButton("Ping");
+        pingButton.addActionListener(_ -> {
+
+            String ipPing = JOptionPane.showInputDialog("Ingresar ip");
+            if (red.ping(ipPing)) {
+                JOptionPane.showMessageDialog(null, "El nodo " + ipPing + " Existe y esta activo");
+            } else {
+                JOptionPane.showMessageDialog(null, "El nodo " + ipPing + " No existe o esta inactivo");
+            }
+
+            System.out.println("PingPong");
+        });
+        botonesPanel.add(pingButton);
 
         JButton agregarNodoButton = new JButton("Agregar Nodo");
         agregarNodoButton.addActionListener(_ -> {
@@ -98,6 +117,30 @@ public class RedPanel extends JPanel {
             System.out.println("Eliminar COnexion");
         });
         botonesPanel.add(eliminarConexionButton);
+
+        JButton caminoCortoButton = new JButton("Encontrar Camino Corto");
+        caminoCortoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
+                String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
+                Nodo origen = red.getNodos().get(origenId);
+                Nodo destino = red.getNodos().get(destinoId);
+
+                if (origen != null && destino != null) {
+                    List<Nodo> camino = red.traceroute(origen, destino);
+                    StringBuilder caminoStr = new StringBuilder("Camino más corto: ");
+                    for (Nodo nodo : camino) {
+                        caminoStr.append(nodo.getId()).append(" -> ");
+                    }
+                    caminoStr.setLength(caminoStr.length() - 4);
+                    JOptionPane.showMessageDialog(null, caminoStr.toString());
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nodos no válidos.");
+                }
+            }
+        });
+        botonesPanel.add(caminoCortoButton);
 
         // Agregar los paneles a la ventana
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, nodosPanel, conexionesPanel);

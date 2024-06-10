@@ -1,4 +1,6 @@
-package lab.clases;
+package lab.modelo;
+
+import lab.logica.Utilidades;
 
 public class Conexion {
     Nodo sourceNode;

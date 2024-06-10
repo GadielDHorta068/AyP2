@@ -1,4 +1,4 @@
-package lab.clases;
+package lab.modelo;
 
 import java.util.Objects;
 

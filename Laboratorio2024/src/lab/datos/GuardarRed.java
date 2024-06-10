@@ -1,8 +1,8 @@
-package lab.filemanager;
+package lab.datos;
 
-import lab.clases.Conexion;
-import lab.clases.Nodo;
-import lab.clases.Red;
+import lab.logica.Red;
+import lab.modelo.Conexion;
+import lab.modelo.Nodo;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

@@ -1,4 +1,4 @@
-package lab.clases;
+package lab.modelo;
 
 public class Computadora extends Nodo {
     public Computadora(String id, String ipAddress, String macAddress, boolean status, String ubicacion) {

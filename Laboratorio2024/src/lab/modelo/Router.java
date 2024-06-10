@@ -1,4 +1,4 @@
-package lab.clases;
+package lab.modelo;
 
 
 public class Router extends Nodo {

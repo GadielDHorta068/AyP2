@@ -1,8 +1,19 @@
-package lab.clases;
+package lab.logica;
+
+import lab.modelo.Nodo;
+import lab.modelo.Router;
 
 import java.util.Random;
 
+/**
+ * Clase con utilidades y logicas sobre el funcionamiento de la Red.
+ */
 public class Utilidades {
+    /**
+     * Genera una direccion MAC aleatoria, usada en la creacion de todo Nodo
+     *
+     * @return String
+     */
     public static String generarMAC() {
         Random rand = new Random();
         byte[] macAddr = new byte[6];
@@ -19,6 +30,12 @@ public class Utilidades {
         return mac.toString().toUpperCase();
     }
 
+    /**
+     * Este metodo genera una direcion IP acorde al nodo Origen desde donde se conecta el nodo pc
+     *
+     * @param router Nodo origen
+     * @param pc     Nodo Destino
+     */
     public static void asignarDireccion(Nodo router, Nodo pc) {
         if (Router.class != pc.getClass()) {
             String[] segmentos = router.getIpAddress().split("\\.");
