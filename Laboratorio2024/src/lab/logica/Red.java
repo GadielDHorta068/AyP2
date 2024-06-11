@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * La clase Red representa una red de nodos y conexiones.
  * Proporciona metodos para agregar nodos y conexiones,
- * y encontrar el camino mas corto entre dos nodos utilizando el algoritmo de Dijkstra.
+ * y encontrar el camino mas corto entre dos nodos utilizando el algoritmo de Dijkstra.(Proximamente)
  */
 
 public class Red {
@@ -45,6 +45,7 @@ public class Red {
      * @param conexion La conexion a agregar
      */
     public void agregarConexion(Conexion conexion) {
+        conexiones.removeIf(con -> con.getTargetNode().equals(conexion.getTargetNode()));
         conexiones.add(conexion);
     }
 
@@ -95,6 +96,10 @@ public class Red {
      * @return boolean
      */
     public boolean ping(String ipAddress) {
+        if (!ipAddress.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
+            return false;
+        }
+
         for (Nodo nodo : nodos.values()) {
             if (nodo.getIpAddress().equals(ipAddress) && nodo.getStatus()) {
                 return true;
@@ -138,14 +143,40 @@ public class Red {
 
     /**
      * Indica el camino mas rapido (mejor ancho de banda) de un nodo origen a un nodo destino
+     * Peligro, programadores laburando
      *
-     * @param origen  Nodo Origen
-     * @param destino Nodo Destino
-     * @return List
+     * @param origen  idNodo Origen
+     * @param destino idNodo Destino
+     * @return String
      */
-    public List<Nodo> traceroute(Nodo origen, Nodo destino) {
-        List<Nodo> path = new ArrayList<>();
-        return path;
+    public String traceroute(String origen, String destino) {
+        if (getNodos().get(origen).equals(getNodos().get(destino))) return "Los nodo origen y destino iguales";
+        if (origen != null && destino != null) {
+            //ACA EL CAMINO Y EL METODO
+            List<String> ruta = new ArrayList<>();
+            List<Nodo> camino = busquedaRuta(origen, destino, ruta, new ArrayList<>()); // Lista de nodos camino
+            StringBuilder caminoStr = new StringBuilder("Camino mas corto: ");
+            for (Nodo nodo : camino) {
+                caminoStr.append(nodo.getId()).append(" -> ");
+            }
+            caminoStr.setLength(caminoStr.length() - 4);
+            return caminoStr.toString();
+        } else {
+            return "Nodos no validos.";
+        }
     }
+
+    private List<Nodo> busquedaRuta(String actual, String destino, List<String> ruta, List<String> visitados) {
+        ruta.add(actual);
+        visitados.add(actual);
+        List<Nodo> rutaNodos = new ArrayList<>();
+        rutaNodos.add(getNodos().get("actual"));
+
+        for (Conexion conexion : conexiones) {
+
+        }
+        return rutaNodos;
+    }
+
 
 }

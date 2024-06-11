@@ -60,6 +60,8 @@ public class RedPanel extends JPanel {
         }
         applyCustomFont("Laboratorio2024/src/lab/interfaz/FiraMonoNerdFont-Medium.otf");
 
+        mostrarDialogoInicial();
+
         // Panel de nodos
         JPanel nodosPanel = new JPanel(new BorderLayout());
         nodosPanel.setBorder(BorderFactory.createTitledBorder("Nodos"));
@@ -147,20 +149,7 @@ public class RedPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
                 String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
-                Nodo origen = red.getNodos().get(origenId);
-                Nodo destino = red.getNodos().get(destinoId);
-
-                if (origen != null && destino != null) {
-                    List<Nodo> camino = red.traceroute(origen, destino);
-                    StringBuilder caminoStr = new StringBuilder("Camino mas corto: ");
-                    for (Nodo nodo : camino) {
-                        caminoStr.append(nodo.getId()).append(" -> ");
-                    }
-                    caminoStr.setLength(caminoStr.length() - 4);
-                    JOptionPane.showMessageDialog(null, caminoStr.toString());
-                } else {
-                    JOptionPane.showMessageDialog(null, "Nodos no validos.");
-                }
+                JOptionPane.showMessageDialog(null, red.traceroute(origenId, destinoId));
             }
         });
         botonesPanel.add(caminoCortoButton);
@@ -174,6 +163,7 @@ public class RedPanel extends JPanel {
         // Cargar datos en las tablas
         cargarDatosEnTablas(red);
     }
+
 
     private void cargarDatosEnTablas(Red red) {
         // Cargar nodos en la tabla
@@ -197,7 +187,7 @@ public class RedPanel extends JPanel {
                 fila.add(router.getUbicacion());
                 fila.add(router.getModelo());
                 fila.add(router.getFirmware());
-                fila.add(String.valueOf(router.getModelo()));
+                fila.add(String.valueOf(router.getThroughput()));
             }
             nodosModel.addRow(fila.toArray());
         }
@@ -479,6 +469,11 @@ public class RedPanel extends JPanel {
         }
     }
 
+    /**
+     * Metodo que aplicara una fuente custom a la aplicacion
+     *
+     * @param fontPath Fuente desdea
+     */
     private void applyCustomFont(String fontPath) {
         try {
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath)).deriveFont(12f);
@@ -493,6 +488,27 @@ public class RedPanel extends JPanel {
             UIManager.put("CheckBox.font", customFont);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Metodo que lanza un cuadro de texto consultando para abrir el pdf del manual
+     */
+    private void mostrarDialogoInicial() {
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Primera vez? Podes abrir el manual de usuario y javadoc", "Abrir Manual", JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION) {
+            try {
+                if (Desktop.isDesktopSupported()) {
+                    File archivoPDF = new File("Laboratorio2024/Manual_de_usuario.pdf");
+                    Desktop.getDesktop().open(archivoPDF);
+                    File archivoJavadoc = new File("Laboratorio2024/javadoc/index.html");
+                    Desktop.getDesktop().open(archivoJavadoc);
+                } else {
+                    JOptionPane.showMessageDialog(this, "La apertura de archivos PDF no es compatible en su sistema.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException e) {
+
+            }
         }
     }
 }

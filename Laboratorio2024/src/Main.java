@@ -20,23 +20,43 @@ public class Main extends JFrame {
 
         Red red = new Red();
 
-        Computadora pc1 = new Computadora("pc1", "000.000.0.000", Utilidades.generarMAC(), true, "Habitacion");
-        Computadora pc2 = new Computadora("pc2", "000.000.0.000", Utilidades.generarMAC(), true, "Oficina");
-        Router router1 = new Router("Router", "192.168.0.254", Utilidades.generarMAC(), true, "Oficina", "Cisco", "1.5.1.13 ", 450);
-        Router modem = new Router("Modem", "192.168.0.0", Utilidades.generarMAC(), true, "Oficina", "RedUno", "1.0 ", 3500);
+        // Computadoras
+        Computadora pc1 = new Computadora("pc1", "192.168.1.2", Utilidades.generarMAC(), true, "Habitacion");
+        Computadora pc2 = new Computadora("pc2", "192.168.1.3", Utilidades.generarMAC(), true, "Oficina");
+        Computadora pc3 = new Computadora("pc3", "192.168.1.4", Utilidades.generarMAC(), true, "Laboratorio");
+        Computadora pc4 = new Computadora("pc4", "192.168.1.5", Utilidades.generarMAC(), true, "Sala de reuniones");
 
+        // Routers
+        Router router1 = new Router("Router1", "192.168.1.1", Utilidades.generarMAC(), true, "Oficina", "Cisco", "1.5.1.13", 450);
+        Router router2 = new Router("Router2", "192.168.2.1", Utilidades.generarMAC(), true, "Piso 2", "TP-Link", "2.1.0", 600);
+        Router modem = new Router("Modem", "192.168.0.1", Utilidades.generarMAC(), true, "Sala de servidores", "RedUno", "1.0", 3500);
+
+        // Agregar nodos a la red
         red.agregarNodo(pc1);
         red.agregarNodo(pc2);
+        red.agregarNodo(pc3);
+        red.agregarNodo(pc4);
         red.agregarNodo(router1);
+        red.agregarNodo(router2);
         red.agregarNodo(modem);
 
-        Conexion conexion = new Conexion(router1, pc1, "WAN", 450, 2, true, 0.01);
-        Conexion conexion2 = new Conexion(router1, pc2, "UTP", 100, 15, true, 0.5);
-        Conexion principal = new Conexion(modem, router1, "UTP", 1000, 0, true, 0.00);
+        // Conexiones
+        Conexion conexion1 = new Conexion(router1, pc1, "UTP", 100, 5, true, 0.01);
+        Conexion conexion2 = new Conexion(router1, pc2, "UTP", 100, 5, true, 0.01);
+        Conexion conexion3 = new Conexion(router2, pc3, "WiFi", 300, 10, true, 0.05);
+        Conexion conexion4 = new Conexion(router2, pc4, "WiFi", 300, 10, true, 0.05);
+        Conexion conexion5 = new Conexion(modem, router1, "Fibra óptica", 1000, 1, true, 0.00);
+        Conexion conexion6 = new Conexion(modem, router2, "Fibra óptica", 1000, 1, true, 0.00);
+        Conexion conexion7 = new Conexion(router1, router2, "Ethernet", 500, 2, true, 0.02);
 
-        red.agregarConexion(conexion);
+        // Agregar conexiones a la red
+        red.agregarConexion(conexion1);
         red.agregarConexion(conexion2);
-        red.agregarConexion(principal);
+        red.agregarConexion(conexion3);
+        red.agregarConexion(conexion4);
+        red.agregarConexion(conexion5);
+        red.agregarConexion(conexion6);
+        red.agregarConexion(conexion7);
 
         return red;
     }
