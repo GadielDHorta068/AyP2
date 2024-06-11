@@ -8,7 +8,16 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Clase que maneja el guardado de la red a un archivo
+ */
 public class GuardarRed {
+    /**
+     * Metodo que convertira la red en un archivo
+     *
+     * @param archivo nombre del archivo a generar, recomendable de extension txt
+     * @param red     Red a ser guardada
+     */
     public static void guardarRed(String archivo, Red red) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
 

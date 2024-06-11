@@ -10,8 +10,8 @@ import java.util.Map;
 
 /**
  * La clase Red representa una red de nodos y conexiones.
- * Proporciona métodos para agregar nodos y conexiones,
- * y encontrar el camino más corto entre dos nodos utilizando el algoritmo de Dijkstra.
+ * Proporciona metodos para agregar nodos y conexiones,
+ * y encontrar el camino mas corto entre dos nodos utilizando el algoritmo de Dijkstra.
  */
 
 public class Red {

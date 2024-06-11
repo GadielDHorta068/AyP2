@@ -55,6 +55,11 @@ public class Main extends JFrame {
         add(redPanel);
     }
 
+    /**
+     * Aqui comienza la ejecucion, crea la red de prueba para ser lanzada en la aplicacion
+     *
+     * @param args argumentos por consola, ninguno en uso
+     */
     public static void main(String[] args) {
         System.out.println("Gestor de redes Denebzera");
         //sanbox para romper todo

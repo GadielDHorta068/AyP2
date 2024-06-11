@@ -20,6 +20,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La clase RedPanel representa la interfaz grafica de usuario para la gestion de una red.
+ * Proporciona funcionalidad para cargar y guardar la red, agregar nodos y encontrar el camino mas corto entre nodos.
+ */
+
 public class RedPanel extends JPanel {
     private JTable nodosTable;
     private JTable conexionesTable;
@@ -48,7 +53,6 @@ public class RedPanel extends JPanel {
         conexionesTable = new JTable();
         conexionesPanel.add(new JScrollPane(conexionesTable), BorderLayout.CENTER);
 
-        // Panel de botones
         JPanel botonesPanel = new JPanel();
 
         JButton refreshButton = new JButton("Refrescar Red");
@@ -129,14 +133,14 @@ public class RedPanel extends JPanel {
 
                 if (origen != null && destino != null) {
                     List<Nodo> camino = red.traceroute(origen, destino);
-                    StringBuilder caminoStr = new StringBuilder("Camino más corto: ");
+                    StringBuilder caminoStr = new StringBuilder("Camino mas corto: ");
                     for (Nodo nodo : camino) {
                         caminoStr.append(nodo.getId()).append(" -> ");
                     }
                     caminoStr.setLength(caminoStr.length() - 4);
                     JOptionPane.showMessageDialog(null, caminoStr.toString());
                 } else {
-                    JOptionPane.showMessageDialog(null, "Nodos no válidos.");
+                    JOptionPane.showMessageDialog(null, "Nodos no validos.");
                 }
             }
         });
@@ -154,7 +158,7 @@ public class RedPanel extends JPanel {
 
     private void cargarDatosEnTablas(Red red) {
         // Cargar nodos en la tabla
-        String[] nodosColumnNames = {"ID", "IP Address", "MAC Address", "Status", "Ubicación", "Marca", "Firmware", "Capacidad"};
+        String[] nodosColumnNames = {"ID", "IP Address", "MAC Address", "Status", "Ubicacion", "Marca", "Firmware", "Capacidad"};
         DefaultTableModel nodosModel = new DefaultTableModel(nodosColumnNames, 0);
         for (Nodo nodo : red.getNodos().values()) {
             List<String> fila = new ArrayList<>();
@@ -257,7 +261,7 @@ public class RedPanel extends JPanel {
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panel.add(new JLabel("Ubicación:"), gbc);
+        panel.add(new JLabel("Ubicacion:"), gbc);
 
         gbc.gridx = 1;
         JTextField ubicacionField = new JTextField(20);
@@ -333,7 +337,7 @@ public class RedPanel extends JPanel {
     }
 
     private void mostrarVentanaAgregarConexion() {
-        JFrame agregarConexionFrame = new JFrame("Agregar Conexión");
+        JFrame agregarConexionFrame = new JFrame("Agregar Conexion");
         agregarConexionFrame.setSize(400, 300);
         agregarConexionFrame.setLocationRelativeTo(null);
 
@@ -423,7 +427,7 @@ public class RedPanel extends JPanel {
                     cargarDatosEnTablas(red);
                     agregarConexionFrame.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(agregarConexionFrame, "Nodos inválidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(agregarConexionFrame, "Nodos invalidos.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

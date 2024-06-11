@@ -2,6 +2,9 @@ package lab.modelo;
 
 import java.util.Objects;
 
+/**
+ * Clase que luego sera heredada por Computadora y Router, ambos comparten todas las variables y metodos aqui usados
+ */
 public class Nodo {
     String id;
     String ipAddress;
@@ -10,6 +13,15 @@ public class Nodo {
     String ubicacion;
     int ipLibre;
 
+    /**
+     * Constructor de Nodo
+     *
+     * @param id         Nombre del Nodo
+     * @param ipAddress  Direccion IP a asignar
+     * @param macAddress Direccion MAC a obtener
+     * @param status     Nodo Activo o Inactivo
+     * @param ubicacion  Ubicacion Fisica del dispositivo
+     */
     public Nodo(String id, String ipAddress, String macAddress, Boolean status, String ubicacion) {
         this.id = id;
         this.ipAddress = ipAddress;
