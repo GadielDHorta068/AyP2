@@ -13,6 +13,12 @@ import java.io.IOException;
  */
 public class GuardarRed {
     /**
+     * Constructor default
+     */
+    public GuardarRed() {
+    }
+
+    /**
      * Metodo que convertira la red en un archivo
      *
      * @param archivo nombre del archivo a generar, recomendable de extension txt

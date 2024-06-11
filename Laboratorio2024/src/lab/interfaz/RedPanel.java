@@ -1,3 +1,6 @@
+/**
+ * Capa con la aplicacion y su interfaz grafica
+ */
 package lab.interfaz;
 
 import com.formdev.flatlaf.FlatDarkLaf;
@@ -26,10 +29,26 @@ import java.util.List;
  */
 
 public class RedPanel extends JPanel {
+    /**
+     * Tabla donde los nodos apareceran
+     */
     private JTable nodosTable;
+
+    /**
+     * Tabla donde apareceran las conexiones
+     */
     private JTable conexionesTable;
+
+    /**
+     * Red usada durante todo el ciclo de vida del programa
+     */
     private Red red;
 
+    /**
+     * Inicia la ventana principal de la aplicacion
+     *
+     * @param red Red a ser usada por el programa al cargar
+     */
     public RedPanel(Red red) {
         this.red = red;
         setLayout(new BorderLayout());

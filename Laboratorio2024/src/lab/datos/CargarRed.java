@@ -1,3 +1,6 @@
+/**
+ * Capa sobre el manejo de ficheros
+ */
 package lab.datos;
 
 import lab.logica.Red;
@@ -14,6 +17,12 @@ import java.io.IOException;
  * Esta clase maneja la carga de un archivo con informacion de una red previamente creada
  */
 public class CargarRed {
+    /**
+     * Constructor default
+     */
+    public CargarRed() {
+    }
+
     /**
      * Este metodo recibira un parametro con el nombre de archivo a cargar y retornara una Red
      *

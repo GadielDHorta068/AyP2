@@ -7,6 +7,9 @@ import lab.modelo.Router;
 
 import javax.swing.*;
 
+/**
+ * Clase Main
+ */
 public class Main extends JFrame {
     /**
      * Este metodo crea una red para ser usada de ejemplo al abrir el programa, tambien puede ser usada para testing

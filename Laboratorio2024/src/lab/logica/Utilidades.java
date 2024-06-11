@@ -10,6 +10,12 @@ import java.util.Random;
  */
 public class Utilidades {
     /**
+     * Constructor default
+     */
+    public Utilidades() {
+    }
+
+    /**
      * Genera una direccion MAC aleatoria, usada en la creacion de todo Nodo
      *
      * @return String

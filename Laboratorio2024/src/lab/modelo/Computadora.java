@@ -1,3 +1,6 @@
+/**
+ * Capa con el modelo de clases que seran usadas en la logica
+ */
 package lab.modelo;
 
 /**

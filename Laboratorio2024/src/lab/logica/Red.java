@@ -1,3 +1,6 @@
+/**
+ * Capa con la logica de funcionamiento del programa
+ */
 package lab.logica;
 
 import lab.modelo.Conexion;
@@ -118,7 +121,7 @@ public class Red {
     /**
      * Getter de la variable nodos
      *
-     * @return Map<String, Nodo>
+     * @return Map
      */
     public Map<String, Nodo> getNodos() {
         return nodos;
@@ -138,7 +141,7 @@ public class Red {
      *
      * @param origen  Nodo Origen
      * @param destino Nodo Destino
-     * @return List<Nodo>
+     * @return List
      */
     public List<Nodo> traceroute(Nodo origen, Nodo destino) {
         List<Nodo> path = new ArrayList<>();
