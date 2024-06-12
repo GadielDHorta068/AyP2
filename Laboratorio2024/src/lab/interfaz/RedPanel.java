@@ -495,7 +495,7 @@ public class RedPanel extends JPanel {
      * Metodo que lanza un cuadro de texto consultando para abrir el pdf del manual
      */
     private void mostrarDialogoInicial() {
-        int respuesta = JOptionPane.showConfirmDialog(this, "¿Primera vez? Podes abrir el manual de usuario y javadoc", "Abrir Manual", JOptionPane.YES_NO_OPTION);
+        int respuesta = JOptionPane.showConfirmDialog(this, "Primera vez? Podes abrir el manual de usuario y javadoc", "Abrir Manual", JOptionPane.YES_NO_OPTION);
         if (respuesta == JOptionPane.YES_OPTION) {
             try {
                 if (Desktop.isDesktopSupported()) {

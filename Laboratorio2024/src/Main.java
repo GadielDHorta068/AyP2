@@ -21,10 +21,10 @@ public class Main extends JFrame {
         Red red = new Red();
 
         // Computadoras
-        Computadora pc1 = new Computadora("pc1", "192.168.1.2", Utilidades.generarMAC(), true, "Habitacion");
-        Computadora pc2 = new Computadora("pc2", "192.168.1.3", Utilidades.generarMAC(), true, "Oficina");
-        Computadora pc3 = new Computadora("pc3", "192.168.1.4", Utilidades.generarMAC(), true, "Laboratorio");
-        Computadora pc4 = new Computadora("pc4", "192.168.1.5", Utilidades.generarMAC(), true, "Sala de reuniones");
+        Computadora pc1 = new Computadora("pc1", "0.0.0.0", Utilidades.generarMAC(), true, "Habitacion");
+        Computadora pc2 = new Computadora("pc2", "0.0.0.0", Utilidades.generarMAC(), true, "Oficina");
+        Computadora pc3 = new Computadora("pc3", "0.0.0.0", Utilidades.generarMAC(), true, "Laboratorio");
+        Computadora pc4 = new Computadora("pc4", "0.0.0.0", Utilidades.generarMAC(), true, "Sala de reuniones");
 
         // Routers
         Router router1 = new Router("Router1", "192.168.1.1", Utilidades.generarMAC(), true, "Oficina", "Cisco", "1.5.1.13", 450);
@@ -45,8 +45,8 @@ public class Main extends JFrame {
         Conexion conexion2 = new Conexion(router1, pc2, "UTP", 100, 5, true, 0.01);
         Conexion conexion3 = new Conexion(router2, pc3, "WiFi", 300, 10, true, 0.05);
         Conexion conexion4 = new Conexion(router2, pc4, "WiFi", 300, 10, true, 0.05);
-        Conexion conexion5 = new Conexion(modem, router1, "Fibra óptica", 1000, 1, true, 0.00);
-        Conexion conexion6 = new Conexion(modem, router2, "Fibra óptica", 1000, 1, true, 0.00);
+        Conexion conexion5 = new Conexion(modem, router1, "Fibra optica", 1000, 1, true, 0.00);
+        Conexion conexion6 = new Conexion(modem, router2, "Fibra optica", 1000, 1, true, 0.00);
         Conexion conexion7 = new Conexion(router1, router2, "Ethernet", 500, 2, true, 0.02);
 
         // Agregar conexiones a la red
@@ -67,7 +67,7 @@ public class Main extends JFrame {
     public Main() {
         setTitle("Gestor de redes Denebzera");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(1200, 800);
         setLocationRelativeTo(null);
 
         // Crear la red y agregar nodos y conexiones
