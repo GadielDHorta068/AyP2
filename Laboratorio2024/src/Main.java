@@ -6,6 +6,7 @@ import lab.modelo.Conexion;
 import lab.modelo.Router;
 
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  * Clase Main
@@ -13,6 +14,7 @@ import javax.swing.*;
 public class Main extends JFrame {
     /**
      * Este metodo crea una red para ser usada de ejemplo al abrir el programa, tambien puede ser usada para testing
+     * No esta siendo usado actualmente, queda como ejemplo de uso, la red esta siendo cargada desde graph.txt
      *
      * @return Red
      */
@@ -64,7 +66,7 @@ public class Main extends JFrame {
     /**
      * Configura la ventana donde se abrira la interfaz
      */
-    public Main() {
+    public Main() throws IOException {
         setTitle("Gestor de redes Denebzera");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 800);
@@ -88,23 +90,13 @@ public class Main extends JFrame {
         //sanbox para romper todo
 
         SwingUtilities.invokeLater(() -> {
-            Main frame = new Main();
+            Main frame = null;
+            try {
+                frame = new Main();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             frame.setVisible(true);
         });
-        //Prints, cambiar a algo mas visual tipo table
-        // red.imprimirConexiones();
-        // red.imprimirNodos();
-
-        // Ejemplo de ping
-        //   System.out.println("Ping a 192.168.0.1: " + red.ping("192.168.0.1"));
-        // System.out.println("Ping a 192.168.1.1: " + red.ping("192.168.1.1"));
-
-        //red.guardarRed("red.txt");
-
-//        // Cargar red desde un archivo
-//        Red nuevaRed = new Red();
-//        nuevaRed.cargarRed("red.txt");
-//        nuevaRed.imprimirNodos();
-//        nuevaRed.imprimirConexiones();
     }
 }

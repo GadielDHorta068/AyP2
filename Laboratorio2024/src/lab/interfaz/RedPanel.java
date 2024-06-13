@@ -6,6 +6,7 @@ package lab.interfaz;
 import com.formdev.flatlaf.FlatDarkLaf;
 import lab.datos.CargarRed;
 import lab.datos.GuardarRed;
+import lab.logica.Controlador;
 import lab.logica.Red;
 import lab.logica.Utilidades;
 import lab.modelo.Computadora;
@@ -44,12 +45,14 @@ public class RedPanel extends JPanel {
      */
     private Red red;
 
+    Controlador control = new Controlador();
+
     /**
      * Inicia la ventana principal de la aplicacion
      *
      * @param red Red a ser usada por el programa al cargar
      */
-    public RedPanel(Red red) {
+    public RedPanel(Red red) throws IOException {
         this.red = red;
         setLayout(new BorderLayout());
 
@@ -86,6 +89,7 @@ public class RedPanel extends JPanel {
         JButton cargarButton = new JButton("Cargar Red");
         cargarButton.addActionListener(_ -> {
             try {
+                control.playSound();
                 cargarRed();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -96,6 +100,7 @@ public class RedPanel extends JPanel {
 
         JButton guardarButton = new JButton("Guardar Red");
         guardarButton.addActionListener(_ -> {
+            control.playSound();
             guardarRed();
             System.out.println("Red Guardada");
         });
@@ -105,6 +110,7 @@ public class RedPanel extends JPanel {
         pingButton.addActionListener(_ -> {
 
             String ipPing = JOptionPane.showInputDialog("Ingresar ip");
+            control.playSound();
             if (red.ping(ipPing)) {
                 JOptionPane.showMessageDialog(null, "El nodo " + ipPing + " Existe y esta activo");
             } else {
@@ -117,6 +123,7 @@ public class RedPanel extends JPanel {
 
         JButton agregarNodoButton = new JButton("Agregar Nodo");
         agregarNodoButton.addActionListener(_ -> {
+            control.playSound();
             mostrarVentanaAgregarNodo();
             System.out.println("Mostrar ventana agregar nodo");
         });
@@ -124,6 +131,7 @@ public class RedPanel extends JPanel {
 
         JButton eliminarNodoButton = new JButton("Eliminar Nodo");
         eliminarNodoButton.addActionListener(_ -> {
+            control.playSound();
             eliminarNodoSeleccionado();
             System.out.println("Eliminar nodo");
         });
@@ -131,6 +139,7 @@ public class RedPanel extends JPanel {
 
         JButton agregarConexionButton = new JButton("Agregar Conexion");
         agregarConexionButton.addActionListener(_ -> {
+            control.playSound();
             mostrarVentanaAgregarConexion();
             System.out.println("Agregar conexion");
         });
@@ -138,6 +147,7 @@ public class RedPanel extends JPanel {
 
         JButton eliminarConexionButton = new JButton("Eliminar Conexion");
         eliminarConexionButton.addActionListener(_ -> {
+            control.playSound();
             eliminarConexionSeleccionada();
             System.out.println("Eliminar COnexion");
         });
@@ -147,6 +157,7 @@ public class RedPanel extends JPanel {
         caminoCortoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                control.playSound();
                 String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
                 String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
                 JOptionPane.showMessageDialog(null, red.traceroute(origenId, destinoId));
@@ -215,6 +226,7 @@ public class RedPanel extends JPanel {
         JFileChooser fileChooser = new JFileChooser();
         int option = fileChooser.showSaveDialog(this);
         if (option == JFileChooser.APPROVE_OPTION) {
+            control.playSound();
             String archivo = fileChooser.getSelectedFile().getAbsolutePath();
             GuardarRed.guardarRed(archivo + ".txt", red);
             JOptionPane.showMessageDialog(this, "Red guardada en " + archivo, "Guardar Red", JOptionPane.INFORMATION_MESSAGE);
@@ -497,18 +509,8 @@ public class RedPanel extends JPanel {
     private void mostrarDialogoInicial() {
         int respuesta = JOptionPane.showConfirmDialog(this, "Primera vez? Podes abrir el manual de usuario y javadoc", "Abrir Manual", JOptionPane.YES_NO_OPTION);
         if (respuesta == JOptionPane.YES_OPTION) {
-            try {
-                if (Desktop.isDesktopSupported()) {
-                    File archivoPDF = new File("Laboratorio2024/Manual_de_usuario.pdf");
-                    Desktop.getDesktop().open(archivoPDF);
-                    File archivoJavadoc = new File("Laboratorio2024/javadoc/index.html");
-                    Desktop.getDesktop().open(archivoJavadoc);
-                } else {
-                    JOptionPane.showMessageDialog(this, "La apertura de archivos PDF no es compatible en su sistema.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (IOException e) {
-
-            }
+            control.playSound();
+            control.dialogoInicial();
         }
     }
 }

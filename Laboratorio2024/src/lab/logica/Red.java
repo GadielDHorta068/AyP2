@@ -5,6 +5,8 @@ package lab.logica;
 
 import lab.modelo.Conexion;
 import lab.modelo.Nodo;
+import net.datastructures.Graph;
+import net.datastructures.Vertex;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,6 +141,16 @@ public class Red {
      */
     public ArrayList<Conexion> getConexiones() {
         return conexiones;
+    }
+
+    /**
+     * Metodo que devuelve el grafo de una red dada
+     *
+     * @param red Red a tratar
+     * @return Graph<Nodo, Vertex < Conexion>>
+     */
+    public Graph<Nodo, Vertex<Conexion>> redToGraph(Red red) {
+        return null;
     }
 
     /**
