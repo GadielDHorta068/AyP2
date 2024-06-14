@@ -77,7 +77,7 @@ public class RedPanel extends JPanel {
         conexionesTable = new JTable();
         conexionesPanel.add(new JScrollPane(conexionesTable), BorderLayout.CENTER);
 
-        JPanel botonesPanel = new JPanel();
+        JPanel botonesPanel = new JPanel(new GridLayout(2, 5, 5, 5));
 
         JButton refreshButton = new JButton("Refrescar Red");
         refreshButton.addActionListener(_ -> {
@@ -85,6 +85,38 @@ public class RedPanel extends JPanel {
             System.out.println("Red refrescada");
         });
         botonesPanel.add(refreshButton);
+
+        JButton agregarNodoButton = new JButton("Agregar Nodo");
+        agregarNodoButton.addActionListener(_ -> {
+            control.playSound();
+            mostrarVentanaAgregarNodo();
+            System.out.println("Mostrar ventana agregar nodo");
+        });
+        botonesPanel.add(agregarNodoButton);
+
+        JButton eliminarNodoButton = new JButton("Eliminar Nodo");
+        eliminarNodoButton.addActionListener(_ -> {
+            control.playSound();
+            eliminarNodoSeleccionado();
+            System.out.println("Eliminar nodo");
+        });
+        botonesPanel.add(eliminarNodoButton);
+
+        JButton agregarConexionButton = new JButton("Agregar Conexion");
+        agregarConexionButton.addActionListener(_ -> {
+            control.playSound();
+            mostrarVentanaAgregarConexion();
+            System.out.println("Agregar conexion");
+        });
+        botonesPanel.add(agregarConexionButton);
+
+        JButton eliminarConexionButton = new JButton("Eliminar Conexion");
+        eliminarConexionButton.addActionListener(_ -> {
+            control.playSound();
+            eliminarConexionSeleccionada();
+            System.out.println("Eliminar COnexion");
+        });
+        botonesPanel.add(eliminarConexionButton);
 
         JButton cargarButton = new JButton("Cargar Red");
         cargarButton.addActionListener(_ -> {
@@ -121,39 +153,7 @@ public class RedPanel extends JPanel {
         });
         botonesPanel.add(pingButton);
 
-        JButton agregarNodoButton = new JButton("Agregar Nodo");
-        agregarNodoButton.addActionListener(_ -> {
-            control.playSound();
-            mostrarVentanaAgregarNodo();
-            System.out.println("Mostrar ventana agregar nodo");
-        });
-        botonesPanel.add(agregarNodoButton);
-
-        JButton eliminarNodoButton = new JButton("Eliminar Nodo");
-        eliminarNodoButton.addActionListener(_ -> {
-            control.playSound();
-            eliminarNodoSeleccionado();
-            System.out.println("Eliminar nodo");
-        });
-        botonesPanel.add(eliminarNodoButton);
-
-        JButton agregarConexionButton = new JButton("Agregar Conexion");
-        agregarConexionButton.addActionListener(_ -> {
-            control.playSound();
-            mostrarVentanaAgregarConexion();
-            System.out.println("Agregar conexion");
-        });
-        botonesPanel.add(agregarConexionButton);
-
-        JButton eliminarConexionButton = new JButton("Eliminar Conexion");
-        eliminarConexionButton.addActionListener(_ -> {
-            control.playSound();
-            eliminarConexionSeleccionada();
-            System.out.println("Eliminar COnexion");
-        });
-        botonesPanel.add(eliminarConexionButton);
-
-        JButton caminoCortoButton = new JButton("Encontrar Camino Corto");
+        JButton caminoCortoButton = new JButton("Camino Corto");
         caminoCortoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -164,6 +164,18 @@ public class RedPanel extends JPanel {
             }
         });
         botonesPanel.add(caminoCortoButton);
+
+        JButton caminoRapidoButton = new JButton("Camino Rapido");
+        caminoCortoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                control.playSound();
+                String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
+                String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
+                JOptionPane.showMessageDialog(null, red.elCaminoDelMST(origenId, destinoId));
+            }
+        });
+        botonesPanel.add(caminoRapidoButton);
 
         // Agregar los paneles a la ventana
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, nodosPanel, conexionesPanel);

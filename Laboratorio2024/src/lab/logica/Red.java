@@ -5,12 +5,13 @@ package lab.logica;
 
 import lab.modelo.Conexion;
 import lab.modelo.Nodo;
+import lab.modelo.Router;
+import net.datastructures.AdjacencyMapGraph;
 import net.datastructures.Graph;
 import net.datastructures.Vertex;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +49,16 @@ public class Red {
      */
     public void agregarConexion(Conexion conexion) {
         conexiones.removeIf(con -> con.getTargetNode().equals(conexion.getTargetNode()));
-        conexiones.add(conexion);
+
+        //compruebo que la conexion sea de computadora a router o viceversa
+        if (conexion.getSourceNode().getClass() != conexion.getTargetNode().getClass()) {
+            conexiones.add(conexion);
+        }
+        //compruebo que la conexion sea de router a router, asi evito el pc a pc
+        if (conexion.getSourceNode().getClass() == Router.class && conexion.getTargetNode().getClass() == Router.class) {
+            conexiones.add(conexion);
+        }
+
     }
 
     /**
@@ -147,14 +157,34 @@ public class Red {
      * Metodo que devuelve el grafo de una red dada
      *
      * @param red Red a tratar
-     * @return Graph<Nodo, Vertex < Conexion>>
+     * @return Graph
      */
-    public Graph<Nodo, Vertex<Conexion>> redToGraph(Red red) {
-        return null;
+    public Graph<Nodo, Conexion> redToGraph(Red red) {
+        Graph<Nodo, Conexion> sistema = new AdjacencyMapGraph<>(false);
+
+        //Mapa con los vertices de cada Nodo
+        Map<Nodo, Vertex<Nodo>> vertexMap = new HashMap<>();
+
+        // Agrego todos los nodos como verices
+        for (Nodo nodo : red.getNodos().values()) {
+            Vertex<Nodo> vertex = sistema.insertVertex(nodo);
+            vertexMap.put(nodo, vertex);
+        }
+
+        // Conexiones a Edges
+        for (Conexion conexion : red.getConexiones()) {
+            Vertex<Nodo> vSource = vertexMap.get(conexion.getSourceNode());
+            Vertex<Nodo> vTarget = vertexMap.get(conexion.getTargetNode());
+            if (vSource != null && vTarget != null) {
+                sistema.insertEdge(vSource, vTarget, conexion);
+            }
+        }
+
+        return sistema;
     }
 
     /**
-     * Indica el camino mas rapido (mejor ancho de banda) de un nodo origen a un nodo destino
+     * Indica el camino mas corto entre dos Nodos
      * Peligro, programadores laburando
      *
      * @param origen  idNodo Origen
@@ -162,32 +192,58 @@ public class Red {
      * @return String
      */
     public String traceroute(String origen, String destino) {
-        if (getNodos().get(origen).equals(getNodos().get(destino))) return "Los nodo origen y destino iguales";
-        if (origen != null && destino != null) {
-            //ACA EL CAMINO Y EL METODO
-            List<String> ruta = new ArrayList<>();
-            List<Nodo> camino = busquedaRuta(origen, destino, ruta, new ArrayList<>()); // Lista de nodos camino
-            StringBuilder caminoStr = new StringBuilder("Camino mas corto: ");
-            for (Nodo nodo : camino) {
-                caminoStr.append(nodo.getId()).append(" -> ");
-            }
-            caminoStr.setLength(caminoStr.length() - 4);
-            return caminoStr.toString();
-        } else {
+        Nodo nodoOrigen = getNodos().get(origen);
+        Nodo nodoDestino = getNodos().get(destino);
+
+        if (nodoOrigen == null || nodoDestino == null) {
             return "Nodos no validos.";
         }
+
+        if (nodoOrigen.equals(nodoDestino)) {
+            return "Los nodo origen y destino son iguales";
+        }
+        Graph<Nodo, Conexion> graph = redToGraph(this);
+//De nodo a vertice
+        //  Vertex<Nodo> vOrigen =
+        //  Vertex<Nodo> vDestino =
+
+        // List<Vertex<Nodo>> camino = GraphAlgorithms.shortestPathList(graph, vOrigen, vDestino);
+
+        StringBuilder caminoStr = new StringBuilder("Camino mas corto: ");
+//        for (Vertex<Nodo> vertex : camino) {
+//            caminoStr.append(vertex.getElement().getId()).append(" -> ");
+//        }
+        caminoStr.setLength(caminoStr.length() - 4);
+        return caminoStr.toString();
     }
 
-    private List<Nodo> busquedaRuta(String actual, String destino, List<String> ruta, List<String> visitados) {
-        ruta.add(actual);
-        visitados.add(actual);
-        List<Nodo> rutaNodos = new ArrayList<>();
-        rutaNodos.add(getNodos().get("actual"));
+    /**
+     * Indica el camino mas rapido (mejor ancho de banda) de un nodo origen a un nodo destino
+     * Peligro, programador chambeando
+     *
+     * @param origen  id del nodo origen
+     * @param destino id del nodo destino
+     * @return String
+     */
+    public String elCaminoDelMST(String origen, String destino) {
 
-        for (Conexion conexion : conexiones) {
+        Nodo nodoOrigen = getNodos().get(origen);
+        Nodo nodoDestino = getNodos().get(destino);
 
+        if (nodoOrigen == null || nodoDestino == null) {
+            return "Nodos no validos.";
         }
-        return rutaNodos;
+
+        if (nodoOrigen.equals(nodoDestino)) {
+            return "Los nodo origen y destino son iguales";
+        }
+
+        Graph<Nodo, Conexion> graph = redToGraph(this);
+        //PositionalList<Edge<Integer>> camino = GraphAlgorithms.MST(graph);
+
+        StringBuilder caminoStr = new StringBuilder("Camino mas corto: ");
+        caminoStr.setLength(caminoStr.length() - 4);
+        return caminoStr.toString();
     }
 
 

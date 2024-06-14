@@ -8,8 +8,20 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Esta clase sera el intermediario entre la interfaz y la logica de funcionamineto
+ */
 public class Controlador extends JFrame {
 
+    /**
+     * Controlador por defecto
+     */
+    public Controlador() {
+    }
+
+    /**
+     * Reproduce el sonido de boton de Minecraft cada vez que sea llamado el metodo
+     */
     public void playSound() {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Laboratorio2024/src/lab/interfaz/boton.wav").getAbsoluteFile());
@@ -21,6 +33,9 @@ public class Controlador extends JFrame {
         }
     }
 
+    /**
+     * Abre el mensaje de benvienida al abrir la aplicacion
+     */
     public void dialogoInicial() {
         try {
             if (Desktop.isDesktopSupported()) {
@@ -35,6 +50,4 @@ public class Controlador extends JFrame {
 
         }
     }
-
-
 }
