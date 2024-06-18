@@ -67,8 +67,8 @@ public class CargarRed {
                 Nodo source = red.buscar(datos[0]);
                 Nodo target = red.buscar(datos[1]);
 
-                System.out.println(target.toString());
-                System.out.println(source.toString());
+                //  System.out.println(target.toString());
+                // System.out.println(source.toString());
 
                 boolean conexionStatus = Boolean.parseBoolean(datos[5]);
                 Conexion conexion = new Conexion(source, target, datos[2], Integer.parseInt(datos[3]), Integer.parseInt(datos[4]), conexionStatus, Double.parseDouble(datos[6]));

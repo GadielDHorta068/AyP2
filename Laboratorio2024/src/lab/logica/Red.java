@@ -6,12 +6,11 @@ package lab.logica;
 import lab.modelo.Conexion;
 import lab.modelo.Nodo;
 import lab.modelo.Router;
-import net.datastructures.AdjacencyMapGraph;
-import net.datastructures.Graph;
-import net.datastructures.Vertex;
+import net.datastructures.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +23,8 @@ public class Red {
     private static Map<String, Nodo> nodos;
     private static ArrayList<Conexion> conexiones;
 
+    Graph<Nodo, Conexion> sistema;
+
     /**
      * Constructor de la clase Red.
      * Inicializa los mapas de nodos y la lista de conexiones.
@@ -31,6 +32,7 @@ public class Red {
     public Red() {
         nodos = new HashMap<>();
         conexiones = new ArrayList<>();
+        Graph<Nodo, Conexion> sistema = new AdjacencyMapGraph<>(false);
     }
 
     /**
@@ -48,17 +50,17 @@ public class Red {
      * @param conexion La conexion a agregar
      */
     public void agregarConexion(Conexion conexion) {
-        conexiones.removeIf(con -> con.getTargetNode().equals(conexion.getTargetNode()));
 
         //compruebo que la conexion sea de computadora a router o viceversa
         if (conexion.getSourceNode().getClass() != conexion.getTargetNode().getClass()) {
+            conexiones.removeIf(con -> con.getTargetNode().equals(conexion.getTargetNode()));
             conexiones.add(conexion);
         }
         //compruebo que la conexion sea de router a router, asi evito el pc a pc
         if (conexion.getSourceNode().getClass() == Router.class && conexion.getTargetNode().getClass() == Router.class) {
+            conexiones.removeIf(con -> con.getTargetNode().equals(conexion.getTargetNode()));
             conexiones.add(conexion);
         }
-
     }
 
     /**
@@ -160,8 +162,7 @@ public class Red {
      * @return Graph
      */
     public Graph<Nodo, Conexion> redToGraph(Red red) {
-        Graph<Nodo, Conexion> sistema = new AdjacencyMapGraph<>(false);
-
+        sistema = new AdjacencyMapGraph<>(false);
         //Mapa con los vertices de cada Nodo
         Map<Nodo, Vertex<Nodo>> vertexMap = new HashMap<>();
 
@@ -180,7 +181,26 @@ public class Red {
             }
         }
 
+        imprimirGraph();
         return sistema;
+    }
+
+    public Vertex<Nodo> buscarVertex(Nodo nodo) {
+        for (Vertex<Nodo> v : sistema.vertices()) {
+            if (v.getElement().equals(nodo)) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+    public void imprimirGraph() {
+        for (Vertex<Nodo> v : sistema.vertices()) {
+            System.out.println(v.getElement().toString());
+        }
+        for (Edge<Conexion> c : sistema.edges()) {
+            System.out.println(c.toString());
+        }
     }
 
     /**
@@ -192,6 +212,7 @@ public class Red {
      * @return String
      */
     public String traceroute(String origen, String destino) {
+        redToGraph(this);
         Nodo nodoOrigen = getNodos().get(origen);
         Nodo nodoDestino = getNodos().get(destino);
 
@@ -202,19 +223,62 @@ public class Red {
         if (nodoOrigen.equals(nodoDestino)) {
             return "Los nodo origen y destino son iguales";
         }
-        Graph<Nodo, Conexion> graph = redToGraph(this);
-//De nodo a vertice
-        //  Vertex<Nodo> vOrigen =
-        //  Vertex<Nodo> vDestino =
-
-        // List<Vertex<Nodo>> camino = GraphAlgorithms.shortestPathList(graph, vOrigen, vDestino);
+        List<Conexion> camino = corto(nodoOrigen, nodoDestino);
 
         StringBuilder caminoStr = new StringBuilder("Camino mas corto: ");
-//        for (Vertex<Nodo> vertex : camino) {
-//            caminoStr.append(vertex.getElement().getId()).append(" -> ");
-//        }
+
+        for (Conexion con : camino) {
+            caminoStr.append(con.getTargetNode().toString()).append(" -> ");
+        }
+
         caminoStr.setLength(caminoStr.length() - 4);
         return caminoStr.toString();
+    }
+
+    /**
+     * Devuelve una lista de conexiones con el camino mas corto entre dos nodos
+     *
+     * @param nodo1 Nodo de origen
+     * @param nodo2 Nodo de destino
+     * @return List
+     */
+    public List<Conexion> corto(Nodo nodo1, Nodo nodo2) {
+        // Copia el grafo original
+        Graph<Nodo, Integer> rapido = new AdjacencyMapGraph<>(false);
+        Map<Nodo, Vertex<Nodo>> res = new HashMap<>();
+        Graph<Nodo, Conexion> grafo = redToGraph(this);
+
+        // Copia los vértices
+        for (Vertex<Nodo> vertex : grafo.vertices()) {
+            res.put(vertex.getElement(), rapido.insertVertex(vertex.getElement()));
+        }
+
+        // Copia las aristas con el peso (bandwidth) como Integer
+        for (Edge<Conexion> edge : grafo.edges()) {
+            Vertex<Nodo>[] vert = grafo.endVertices(edge);
+            rapido.insertEdge(res.get(vert[0].getElement()), res.get(vert[1].getElement()), edge.getElement().getBandwidth());
+        }
+
+        // Encuentra el camino más corto
+        PositionalList<Vertex<Nodo>> lista = GraphAlgorithms.shortestPathList(rapido, res.get(nodo1), res.get(nodo2));
+        List<Conexion> tramos = new ArrayList<>();
+
+        // Extrae las conexiones del camino más corto
+        Position<Vertex<Nodo>> aux = lista.first();
+        while (lista.after(aux) != null) {
+            Vertex<Nodo> v1 = aux.getElement();
+            aux = lista.after(aux);
+            Vertex<Nodo> v2 = aux.getElement();
+            Edge<Conexion> edge = grafo.getEdge(v1, v2);
+            if (edge != null) {
+                tramos.add(edge.getElement());
+            } else {
+                // Manejar el caso en que no se encuentra una conexión entre los nodos v1 y v2
+                throw new IllegalStateException("No se encontró una conexión entre " + v1.getElement() + " y " + v2.getElement());
+            }
+        }
+
+        return tramos;
     }
 
     /**
@@ -225,11 +289,12 @@ public class Red {
      * @param destino id del nodo destino
      * @return String
      */
-    public String elCaminoDelMST(String origen, String destino) {
+    public String caminoRapido(String origen, String destino) {
 
         Nodo nodoOrigen = getNodos().get(origen);
         Nodo nodoDestino = getNodos().get(destino);
 
+        redToGraph(this);
         if (nodoOrigen == null || nodoDestino == null) {
             return "Nodos no validos.";
         }
@@ -237,13 +302,61 @@ public class Red {
         if (nodoOrigen.equals(nodoDestino)) {
             return "Los nodo origen y destino son iguales";
         }
+        List<Conexion> camino = rapido(nodoOrigen, nodoDestino);
 
-        Graph<Nodo, Conexion> graph = redToGraph(this);
-        //PositionalList<Edge<Integer>> camino = GraphAlgorithms.MST(graph);
+        StringBuilder caminoStr = new StringBuilder("Camino mas rapido: ");
 
-        StringBuilder caminoStr = new StringBuilder("Camino mas corto: ");
+        for (Conexion con : camino) {
+            caminoStr.append(con.getTargetNode().toString()).append(" -> ");
+        }
+
         caminoStr.setLength(caminoStr.length() - 4);
         return caminoStr.toString();
+    }
+
+    /**
+     * Devuelve una lista con el camino mas rapido de conexiones entre dos nodos
+     *
+     * @param nodo1 Nodo origen
+     * @param nodo2 Nodo destino
+     * @return List
+     */
+    public List<Conexion> rapido(Nodo nodo1, Nodo nodo2) {
+        // Copia el grafo original
+        Graph<Nodo, Integer> rapido = new AdjacencyMapGraph<>(false);
+        Map<Nodo, Vertex<Nodo>> res = new HashMap<>();
+        Graph<Nodo, Conexion> grafo = sistema;
+
+        // Copia los vértices
+        for (Vertex<Nodo> vertex : grafo.vertices()) {
+            res.put(vertex.getElement(), rapido.insertVertex(vertex.getElement()));
+        }
+
+        // Copia las aristas con el peso (bandwidth) como Integer
+        for (Edge<Conexion> edge : grafo.edges()) {
+            Vertex<Nodo>[] vert = grafo.endVertices(edge);
+            rapido.insertEdge(res.get(vert[0].getElement()), res.get(vert[1].getElement()), edge.getElement().getBandwidth());
+        }
+
+        // Encuentra el camino más corto
+        PositionalList<Vertex<Nodo>> lista = GraphAlgorithms.shortestPathList(rapido, res.get(nodo1), res.get(nodo2));
+        List<Conexion> tramos = new ArrayList<>();
+
+        // Extrae las conexiones del camino más corto
+        Position<Vertex<Nodo>> aux = lista.first();
+        while (lista.after(aux) != null) {
+            Vertex<Nodo> v1 = aux.getElement();
+            aux = lista.after(aux);
+            Vertex<Nodo> v2 = aux.getElement();
+            Edge<Conexion> edge = grafo.getEdge(v1, v2);
+            if (edge != null) {
+                tramos.add(edge.getElement());
+            } else {
+                throw new IllegalStateException("No se encontró una conexión entre " + v1.getElement() + " y " + v2.getElement());
+            }
+        }
+
+        return tramos;
     }
 
 

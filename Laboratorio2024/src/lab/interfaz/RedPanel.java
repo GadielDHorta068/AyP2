@@ -166,13 +166,13 @@ public class RedPanel extends JPanel {
         botonesPanel.add(caminoCortoButton);
 
         JButton caminoRapidoButton = new JButton("Camino Rapido");
-        caminoCortoButton.addActionListener(new ActionListener() {
+        caminoRapidoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 control.playSound();
                 String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
                 String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
-                JOptionPane.showMessageDialog(null, red.elCaminoDelMST(origenId, destinoId));
+                JOptionPane.showMessageDialog(null, red.caminoRapido(origenId, destinoId));
             }
         });
         botonesPanel.add(caminoRapidoButton);
@@ -251,8 +251,9 @@ public class RedPanel extends JPanel {
         if (option == JFileChooser.APPROVE_OPTION) {
             String archivo = fileChooser.getSelectedFile().getAbsolutePath();
             Red red = CargarRed.cargarRed(archivo);
-            red.imprimirNodos();
-            red.imprimirConexiones();
+            red.redToGraph(red);
+            // red.imprimirNodos();
+            //red.imprimirConexiones();
             cargarDatosEnTablas(red);
             JOptionPane.showMessageDialog(this, "Red cargada desde " + archivo, "Cargar Red", JOptionPane.INFORMATION_MESSAGE);
         }
