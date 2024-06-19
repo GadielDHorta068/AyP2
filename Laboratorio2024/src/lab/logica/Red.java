@@ -5,7 +5,6 @@ package lab.logica;
 
 import lab.modelo.Conexion;
 import lab.modelo.Nodo;
-import lab.modelo.Router;
 import net.datastructures.*;
 
 import java.util.ArrayList;
@@ -20,19 +19,17 @@ import java.util.Map;
  */
 
 public class Red {
-    private static Map<String, Nodo> nodos;
-    private static ArrayList<Conexion> conexiones;
 
-    Graph<Nodo, Conexion> sistema;
+    private static Graph<Nodo, Conexion> sistema;
+    private static TreeMap<String, Vertex<Nodo>> vertices;
 
     /**
      * Constructor de la clase Red.
      * Inicializa los mapas de nodos y la lista de conexiones.
      */
     public Red() {
-        nodos = new HashMap<>();
-        conexiones = new ArrayList<>();
-        Graph<Nodo, Conexion> sistema = new AdjacencyMapGraph<>(false);
+        sistema = new AdjacencyMapGraph<>(false);
+        vertices = new TreeMap<>();
     }
 
     /**
@@ -41,7 +38,8 @@ public class Red {
      * @param nodo El nodo a agregar
      */
     public void agregarNodo(Nodo nodo) {
-        nodos.put(nodo.getId(), nodo);
+        Vertex<Nodo> vertex = sistema.insertVertex(nodo);
+        vertices.put(nodo.getId(), vertex);
     }
 
     /**
@@ -50,16 +48,18 @@ public class Red {
      * @param conexion La conexion a agregar
      */
     public void agregarConexion(Conexion conexion) {
+        Vertex<Nodo> sourceVertex = vertices.get(conexion.getSourceNode().getId());
+        Vertex<Nodo> targetVertex = vertices.get(conexion.getTargetNode().getId());
 
-        //compruebo que la conexion sea de computadora a router o viceversa
-        if (conexion.getSourceNode().getClass() != conexion.getTargetNode().getClass()) {
-            conexiones.removeIf(con -> con.getTargetNode().equals(conexion.getTargetNode()));
-            conexiones.add(conexion);
-        }
-        //compruebo que la conexion sea de router a router, asi evito el pc a pc
-        if (conexion.getSourceNode().getClass() == Router.class && conexion.getTargetNode().getClass() == Router.class) {
-            conexiones.removeIf(con -> con.getTargetNode().equals(conexion.getTargetNode()));
-            conexiones.add(conexion);
+        if (sourceVertex != null && targetVertex != null) {
+            for (Edge<Conexion> con : sistema.edges()) {
+                if (con == conexion) {
+                    //figurita repetida
+                    sistema.removeEdge(sistema.getEdge(sourceVertex, targetVertex));
+                }
+            }
+            sistema.insertEdge(sourceVertex, targetVertex, conexion);
+
         }
     }
 
@@ -69,8 +69,10 @@ public class Red {
      * @param nodoId El nodo a ser eliminado.
      */
     public void eliminarNodo(String nodoId) {
-        nodos.remove(nodoId);
-        conexiones.removeIf(conexion -> conexion.getSourceNode().getId().equals(nodoId) || conexion.getTargetNode().getId().equals(nodoId));
+        Vertex<Nodo> vertex = vertices.remove(nodoId);
+        if (vertex != null) {
+            sistema.removeVertex(vertex);
+        }
     }
 
     /**
@@ -80,7 +82,12 @@ public class Red {
      * @param targetId El nodo Objetivo
      */
     public void eliminarConexion(String sourceId, String targetId) {
-        conexiones.removeIf(conexion -> conexion.getSourceNode().getId().equals(sourceId) && conexion.getTargetNode().getId().equals(targetId));
+        Vertex<Nodo> sourceVertex = vertices.get(sourceId);
+        Vertex<Nodo> targetVertex = vertices.get(targetId);
+
+        if (sourceVertex != null && targetVertex != null) {
+            sistema.removeEdge(sistema.getEdge(sourceVertex, targetVertex));
+        }
     }
 
     /**
@@ -88,8 +95,8 @@ public class Red {
      */
     public void imprimirNodos() {
         System.out.println("Lista de Nodos:");
-        for (Nodo nodo : nodos.values()) {
-            System.out.println(nodo);
+        for (Vertex<Nodo> vertex : sistema.vertices()) {
+            System.out.println(vertex.getElement());
         }
     }
 
@@ -98,8 +105,8 @@ public class Red {
      */
     public void imprimirConexiones() {
         System.out.println("Lista de Conexiones:");
-        for (Conexion conexion : conexiones) {
-            System.out.println(conexion);
+        for (Edge<Conexion> conexion : sistema.edges()) {
+            System.out.println(conexion.getElement().toString());
         }
     }
 
@@ -114,7 +121,8 @@ public class Red {
             return false;
         }
 
-        for (Nodo nodo : nodos.values()) {
+        for (Vertex<Nodo> vertex : sistema.vertices()) {
+            Nodo nodo = vertex.getElement();
             if (nodo.getIpAddress().equals(ipAddress) && nodo.getStatus()) {
                 return true;
             }
@@ -129,8 +137,10 @@ public class Red {
      * @return Nodo existente y activo
      */
     public Nodo buscar(String id) {
-        for (Nodo nodo : nodos.values()) {
-            if (nodo.getId().equals(id) && nodo.getStatus()) {
+        Vertex<Nodo> vertex = vertices.get(id);
+        if (vertex != null) {
+            Nodo nodo = vertex.getElement();
+            if (nodo.getStatus()) {
                 return nodo;
             }
         }
@@ -142,8 +152,8 @@ public class Red {
      *
      * @return Map
      */
-    public Map<String, Nodo> getNodos() {
-        return nodos;
+    public TreeMap<String, Vertex<Nodo>> getNodos() {
+        return vertices;
     }
 
     /**
@@ -151,38 +161,12 @@ public class Red {
      *
      * @return ArrayList
      */
-    public ArrayList<Conexion> getConexiones() {
+    public List<Conexion> getConexiones() {
+        List<Conexion> conexiones = new ArrayList<>();
+        for (Edge<Conexion> conexion : sistema.edges()) {
+            conexiones.add(conexion.getElement());
+        }
         return conexiones;
-    }
-
-    /**
-     * Metodo que devuelve el grafo de una red dada
-     *
-     * @param red Red a tratar
-     * @return Graph
-     */
-    public Graph<Nodo, Conexion> redToGraph(Red red) {
-        sistema = new AdjacencyMapGraph<>(false);
-        //Mapa con los vertices de cada Nodo
-        Map<Nodo, Vertex<Nodo>> vertexMap = new HashMap<>();
-
-        // Agrego todos los nodos como verices
-        for (Nodo nodo : red.getNodos().values()) {
-            Vertex<Nodo> vertex = sistema.insertVertex(nodo);
-            vertexMap.put(nodo, vertex);
-        }
-
-        // Conexiones a Edges
-        for (Conexion conexion : red.getConexiones()) {
-            Vertex<Nodo> vSource = vertexMap.get(conexion.getSourceNode());
-            Vertex<Nodo> vTarget = vertexMap.get(conexion.getTargetNode());
-            if (vSource != null && vTarget != null) {
-                sistema.insertEdge(vSource, vTarget, conexion);
-            }
-        }
-
-        imprimirGraph();
-        return sistema;
     }
 
     public Vertex<Nodo> buscarVertex(Nodo nodo) {
@@ -195,12 +179,8 @@ public class Red {
     }
 
     public void imprimirGraph() {
-        for (Vertex<Nodo> v : sistema.vertices()) {
-            System.out.println(v.getElement().toString());
-        }
-        for (Edge<Conexion> c : sistema.edges()) {
-            System.out.println(c.toString());
-        }
+        imprimirNodos();
+        imprimirConexiones();
     }
 
     /**
@@ -212,9 +192,8 @@ public class Red {
      * @return String
      */
     public String traceroute(String origen, String destino) {
-        redToGraph(this);
-        Nodo nodoOrigen = getNodos().get(origen);
-        Nodo nodoDestino = getNodos().get(destino);
+        Nodo nodoOrigen = getNodos().get(origen).getElement();
+        Nodo nodoDestino = getNodos().get(destino).getElement();
 
         if (nodoOrigen == null || nodoDestino == null) {
             return "Nodos no validos.";
@@ -223,12 +202,12 @@ public class Red {
         if (nodoOrigen.equals(nodoDestino)) {
             return "Los nodo origen y destino son iguales";
         }
-        List<Conexion> camino = corto(nodoOrigen, nodoDestino);
+        List<Nodo> camino = caminoMasRapido(nodoOrigen, nodoDestino);
 
         StringBuilder caminoStr = new StringBuilder("Camino mas corto: ");
 
-        for (Conexion con : camino) {
-            caminoStr.append(con.getTargetNode().toString()).append(" -> ");
+        for (Nodo nodo : camino) {
+            caminoStr.append(nodo.getId()).append(" -> ");
         }
 
         caminoStr.setLength(caminoStr.length() - 4);
@@ -242,39 +221,38 @@ public class Red {
      * @param nodo2 Nodo de destino
      * @return List
      */
-    public List<Conexion> corto(Nodo nodo1, Nodo nodo2) {
+    public List<Nodo> caminoMasRapido(Nodo nodo1, Nodo nodo2) {
         // Copia el grafo original
         Graph<Nodo, Integer> rapido = new AdjacencyMapGraph<>(false);
         Map<Nodo, Vertex<Nodo>> res = new HashMap<>();
-        Graph<Nodo, Conexion> grafo = redToGraph(this);
 
         // Copia los vértices
-        for (Vertex<Nodo> vertex : grafo.vertices()) {
+        for (Vertex<Nodo> vertex : sistema.vertices()) {
             res.put(vertex.getElement(), rapido.insertVertex(vertex.getElement()));
         }
 
         // Copia las aristas con el peso (bandwidth) como Integer
-        for (Edge<Conexion> edge : grafo.edges()) {
-            Vertex<Nodo>[] vert = grafo.endVertices(edge);
+        for (Edge<Conexion> edge : sistema.edges()) {
+            Vertex<Nodo>[] vert = sistema.endVertices(edge);
             rapido.insertEdge(res.get(vert[0].getElement()), res.get(vert[1].getElement()), edge.getElement().getBandwidth());
         }
 
         // Encuentra el camino más corto
         PositionalList<Vertex<Nodo>> lista = GraphAlgorithms.shortestPathList(rapido, res.get(nodo1), res.get(nodo2));
-        List<Conexion> tramos = new ArrayList<>();
+        List<Nodo> tramos = new ArrayList<>();
 
         // Extrae las conexiones del camino más corto
         Position<Vertex<Nodo>> aux = lista.first();
+        tramos.addFirst(lista.first().getElement().getElement());
+
         while (lista.after(aux) != null) {
-            Vertex<Nodo> v1 = aux.getElement();
             aux = lista.after(aux);
-            Vertex<Nodo> v2 = aux.getElement();
-            Edge<Conexion> edge = grafo.getEdge(v1, v2);
-            if (edge != null) {
-                tramos.add(edge.getElement());
+            if (lista.first().getElement().getElement().getId().equals(nodo1.getId()) && lista.last().getElement().getElement().getId().equals(nodo2.getId()) ||
+                    lista.first().getElement().getElement().getId().equals(nodo2.getId()) && lista.last().getElement().getElement().getId().equals(nodo1.getId())) {
+                tramos.add(aux.getElement().getElement());
             } else {
-                // Manejar el caso en que no se encuentra una conexión entre los nodos v1 y v2
-                throw new IllegalStateException("No se encontró una conexión entre " + v1.getElement() + " y " + v2.getElement());
+                // Manejar el caso en que no se encuentra una conexión entre los nodos
+                throw new IllegalStateException("No se encontró una conexión entre " + nodo1.getId() + " y " + nodo2.getId());
             }
         }
 
@@ -289,12 +267,11 @@ public class Red {
      * @param destino id del nodo destino
      * @return String
      */
-    public String caminoRapido(String origen, String destino) {
+    public String arbolPesoMinimo(String origen, String destino) {
 
-        Nodo nodoOrigen = getNodos().get(origen);
-        Nodo nodoDestino = getNodos().get(destino);
+        Nodo nodoOrigen = getNodos().get(origen).getElement();
+        Nodo nodoDestino = getNodos().get(destino).getElement();
 
-        redToGraph(this);
         if (nodoOrigen == null || nodoDestino == null) {
             return "Nodos no validos.";
         }
@@ -302,7 +279,7 @@ public class Red {
         if (nodoOrigen.equals(nodoDestino)) {
             return "Los nodo origen y destino son iguales";
         }
-        List<Conexion> camino = rapido(nodoOrigen, nodoDestino);
+        List<Conexion> camino = MST(sistema);
 
         StringBuilder caminoStr = new StringBuilder("Camino mas rapido: ");
 
@@ -315,49 +292,39 @@ public class Red {
     }
 
     /**
-     * Devuelve una lista con el camino mas rapido de conexiones entre dos nodos
+     * MST
      *
-     * @param nodo1 Nodo origen
-     * @param nodo2 Nodo destino
+     * @param sistema
      * @return List
      */
-    public List<Conexion> rapido(Nodo nodo1, Nodo nodo2) {
+    public List<Conexion> MST(Graph<Nodo, Conexion> sistema) {
         // Copia el grafo original
         Graph<Nodo, Integer> rapido = new AdjacencyMapGraph<>(false);
         Map<Nodo, Vertex<Nodo>> res = new HashMap<>();
-        Graph<Nodo, Conexion> grafo = sistema;
 
         // Copia los vértices
-        for (Vertex<Nodo> vertex : grafo.vertices()) {
+        for (Vertex<Nodo> vertex : Red.sistema.vertices()) {
             res.put(vertex.getElement(), rapido.insertVertex(vertex.getElement()));
         }
 
         // Copia las aristas con el peso (bandwidth) como Integer
-        for (Edge<Conexion> edge : grafo.edges()) {
-            Vertex<Nodo>[] vert = grafo.endVertices(edge);
+        for (Edge<Conexion> edge : Red.sistema.edges()) {
+            Vertex<Nodo>[] vert = Red.sistema.endVertices(edge);
             rapido.insertEdge(res.get(vert[0].getElement()), res.get(vert[1].getElement()), edge.getElement().getBandwidth());
         }
 
-        // Encuentra el camino más corto
-        PositionalList<Vertex<Nodo>> lista = GraphAlgorithms.shortestPathList(rapido, res.get(nodo1), res.get(nodo2));
+        // Encuentra el Arbol de expansion Minima
+        PositionalList<Edge<Integer>> lista = GraphAlgorithms.MST(rapido);
         List<Conexion> tramos = new ArrayList<>();
 
-        // Extrae las conexiones del camino más corto
-        Position<Vertex<Nodo>> aux = lista.first();
+        Position<Edge<Integer>> aux = lista.first();
+
         while (lista.after(aux) != null) {
-            Vertex<Nodo> v1 = aux.getElement();
             aux = lista.after(aux);
-            Vertex<Nodo> v2 = aux.getElement();
-            Edge<Conexion> edge = grafo.getEdge(v1, v2);
-            if (edge != null) {
-                tramos.add(edge.getElement());
-            } else {
-                throw new IllegalStateException("No se encontró una conexión entre " + v1.getElement() + " y " + v2.getElement());
-            }
+            //tramos.add(aux.getElement());
+
         }
 
         return tramos;
     }
-
-
 }

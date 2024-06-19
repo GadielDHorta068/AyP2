@@ -75,6 +75,7 @@ public class CargarRed {
                 red.agregarConexion(conexion);
             }
         }
+        red.imprimirGraph();
         return red;
     }
 }

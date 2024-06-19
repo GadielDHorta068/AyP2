@@ -13,6 +13,7 @@ import lab.modelo.Computadora;
 import lab.modelo.Conexion;
 import lab.modelo.Nodo;
 import lab.modelo.Router;
+import net.datastructures.Vertex;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -153,14 +154,14 @@ public class RedPanel extends JPanel {
         });
         botonesPanel.add(pingButton);
 
-        JButton caminoCortoButton = new JButton("Camino Corto");
+        JButton caminoCortoButton = new JButton("Peso Minimo");
         caminoCortoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 control.playSound();
                 String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
                 String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
-                JOptionPane.showMessageDialog(null, red.traceroute(origenId, destinoId));
+                JOptionPane.showMessageDialog(null, red.arbolPesoMinimo(origenId, destinoId));
             }
         });
         botonesPanel.add(caminoCortoButton);
@@ -172,7 +173,7 @@ public class RedPanel extends JPanel {
                 control.playSound();
                 String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
                 String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
-                JOptionPane.showMessageDialog(null, red.caminoRapido(origenId, destinoId));
+                JOptionPane.showMessageDialog(null, red.traceroute(origenId, destinoId));
             }
         });
         botonesPanel.add(caminoRapidoButton);
@@ -192,7 +193,8 @@ public class RedPanel extends JPanel {
         // Cargar nodos en la tabla
         String[] nodosColumnNames = {"ID", "IP Address", "MAC Address", "Status", "Ubicacion", "Marca", "Firmware", "Capacidad"};
         DefaultTableModel nodosModel = new DefaultTableModel(nodosColumnNames, 0);
-        for (Nodo nodo : red.getNodos().values()) {
+        for (Vertex<Nodo> nodos : red.getNodos().values()) {
+            Nodo nodo = nodos.getElement();
             List<String> fila = new ArrayList<>();
             fila.add(nodo.getId());
             fila.add(nodo.getIpAddress());
@@ -251,9 +253,8 @@ public class RedPanel extends JPanel {
         if (option == JFileChooser.APPROVE_OPTION) {
             String archivo = fileChooser.getSelectedFile().getAbsolutePath();
             Red red = CargarRed.cargarRed(archivo);
-            red.redToGraph(red);
-            // red.imprimirNodos();
-            //red.imprimirConexiones();
+            red.imprimirNodos();
+            red.imprimirConexiones();
             cargarDatosEnTablas(red);
             JOptionPane.showMessageDialog(this, "Red cargada desde " + archivo, "Cargar Red", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -478,17 +479,9 @@ public class RedPanel extends JPanel {
             String targetId = (String) conexionesTable.getValueAt(selectedRow, 1);
 
             Conexion conexionAEliminar = null;
-            for (Conexion conexion : red.getConexiones()) {
-                if (conexion.getSourceNode().getId().equals(sourceId) && conexion.getTargetNode().getId().equals(targetId)) {
-                    conexionAEliminar = conexion;
-                    break;
-                }
-            }
+            red.eliminarConexion(sourceId, targetId);
+            cargarDatosEnTablas(red);
 
-            if (conexionAEliminar != null) {
-                red.getConexiones().remove(conexionAEliminar);
-                cargarDatosEnTablas(red);
-            }
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una conexion para eliminar.", "Eliminar Conexion", JOptionPane.WARNING_MESSAGE);
         }

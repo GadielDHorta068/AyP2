@@ -169,8 +169,7 @@ public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
      *
      * @throws IllegalArgumentException if u or v are invalid vertices, or if an edge already exists between u and v.
      */
-    public Edge<E> insertEdge(Vertex<V> u, Vertex<V> v, E element)
-            throws IllegalArgumentException {
+    public Edge<E> insertEdge(Vertex<V> u, Vertex<V> v, E element) {
         if (getEdge(u, v) == null) {
             InnerEdge<E> e = new InnerEdge<>(u, v, element);
             e.setPosition(edges.addLast(e));
@@ -179,8 +178,8 @@ public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
             origin.getOutgoing().put(v, e);
             dest.getIncoming().put(u, e);
             return e;
-        } else
-            throw new IllegalArgumentException("Edge from u to v exists");
+        }
+        return null;
     }
 
     /**
@@ -205,7 +204,7 @@ public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
         // remove this edge from vertices' adjacencies
         Vertex<V>[] verts = (Vertex<V>[]) edge.getEndpoints();
         ((AdjacencyMapGraph<V, E>.InnerVertex<V>) verts[0]).getOutgoing().remove(verts[1]);
-        ((AdjacencyMapGraph<V, E>.InnerVertex<V>) verts[1]).getOutgoing().remove(verts[0]);
+        ((AdjacencyMapGraph<V, E>.InnerVertex<V>) verts[1]).getIncoming().remove(verts[0]);
         // remove this edge from the list of edges
         edges.remove(edge.getPosition());
         edge.setPosition(null);             // invalidates the edge
@@ -223,7 +222,8 @@ public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
     private InnerEdge<E> validate(Edge<E> e) {
         if (!(e instanceof InnerEdge)) throw new IllegalArgumentException("Invalid edge");
         InnerEdge<E> edge = (InnerEdge<E>) e;     // safe cast
-        if (!edge.validate(this)) throw new IllegalArgumentException("Invalid edge");
+        if (!edge.validate(this))
+            throw new IllegalArgumentException("Invalid edge");
         return edge;
     }
 
@@ -297,7 +297,7 @@ public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
     /**
      * An edge between two vertices.
      */
-    public class InnerEdge<E> implements Edge<E> {
+    private class InnerEdge<E> implements Edge<E> {
         private E element;
         private Position<Edge<E>> pos;
         private Vertex<V>[] endpoints;

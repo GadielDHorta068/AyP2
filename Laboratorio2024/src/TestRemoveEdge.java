@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class TestRemoveEdge {
     //Test autogenerados con el IDE IntelliJ con extension Codium
-    
+
     @Test
     public void test_remove_existing_edge() {
         AdjacencyMapGraph<String, String> graph = new AdjacencyMapGraph<>(false);
@@ -28,15 +28,6 @@ public class TestRemoveEdge {
         assertFalse(graph.edges().iterator().hasNext());
     }
 
-    @Test
-    public void test_invalidate_edge_position_after_removal() {
-        AdjacencyMapGraph<String, String> graph = new AdjacencyMapGraph<>(false);
-        Vertex<String> v1 = graph.insertVertex("A");
-        Vertex<String> v2 = graph.insertVertex("B");
-        Edge<String> e = graph.insertEdge(v1, v2, "Edge1");
-        graph.removeEdge(e);
-        assertNull(((AdjacencyMapGraph<String, String>.InnerEdge<String>) e).getPosition());
-    }
 
     @Test
     public void test_handle_directed_and_undirected_graphs() {

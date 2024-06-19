@@ -3,6 +3,7 @@ package lab.datos;
 import lab.logica.Red;
 import lab.modelo.Conexion;
 import lab.modelo.Nodo;
+import net.datastructures.Vertex;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -26,11 +27,12 @@ public class GuardarRed {
      */
     public static void guardarRed(String archivo, Red red) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
-
-            for (Nodo nodo : red.getNodos().values()) {
-                bw.write(nodo.toCSV() + "\n");
+            bw.write("#Nodos" + "\n");
+            for (Vertex<Nodo> nodo : red.getNodos().values()) {
+                bw.write(nodo.getElement().toCSV() + "\n");
             }
 
+            bw.write("#Conexiones" + "\n");
             for (Conexion conexion : red.getConexiones()) {
                 bw.write(conexion.toCSV() + "\n");
             }
