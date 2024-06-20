@@ -78,7 +78,8 @@ public class RedPanel extends JPanel {
         conexionesTable = new JTable();
         conexionesPanel.add(new JScrollPane(conexionesTable), BorderLayout.CENTER);
 
-        JPanel botonesPanel = new JPanel(new GridLayout(2, 5, 5, 5));
+
+        JPanel botonesPanel = new JPanel(new GridLayout(3, 5, 5, 5));
 
         JButton refreshButton = new JButton("Refrescar Red");
         refreshButton.addActionListener(_ -> {
@@ -159,9 +160,7 @@ public class RedPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 control.playSound();
-                String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
-                String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
-                JOptionPane.showMessageDialog(null, red.arbolPesoMinimo(origenId, destinoId));
+                JOptionPane.showMessageDialog(null, control.arbolPesoMinimo(red));
             }
         });
         botonesPanel.add(caminoCortoButton);
@@ -173,11 +172,32 @@ public class RedPanel extends JPanel {
                 control.playSound();
                 String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
                 String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
-                JOptionPane.showMessageDialog(null, red.traceroute(origenId, destinoId));
+                JOptionPane.showMessageDialog(null, control.traceroute(red, origenId, destinoId));
             }
         });
         botonesPanel.add(caminoRapidoButton);
 
+        JButton flujoButton = new JButton("Flujo Maximo");
+        flujoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                control.playSound();
+                String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
+                String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
+                JOptionPane.showMessageDialog(null, control.flujo(red, origenId, destinoId));
+            }
+        });
+        botonesPanel.add(flujoButton);
+
+        JButton graficoButton = new JButton("Dibujar Graph (todavia no)");
+        graficoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                control.playSound();
+                JOptionPane.showMessageDialog(null, "Bug en construccion");
+            }
+        });
+        botonesPanel.add(graficoButton);
         // Agregar los paneles a la ventana
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, nodosPanel, conexionesPanel);
         splitPane.setDividerLocation(300);
