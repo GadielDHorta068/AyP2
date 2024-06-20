@@ -19,6 +19,7 @@ public class Main extends JFrame {
         setLocationRelativeTo(null);
 
         // Crear la red y agregar nodos y conexiones
+        //URL urlArchivo = getClass().getResource("graph.txt");
         Red red = CargarRed.cargarRed("Laboratorio2024/graph.txt");
 
         // Crear el panel de la red y agregarlo a la ventana

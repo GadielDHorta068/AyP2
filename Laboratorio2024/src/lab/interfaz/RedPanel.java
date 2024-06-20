@@ -30,6 +30,7 @@ import java.util.List;
  * Proporciona funcionalidad para cargar y guardar la red, agregar nodos y encontrar el camino mas corto entre nodos.
  */
 
+@SuppressWarnings("serial")
 public class RedPanel extends JPanel {
     /**
      * Tabla donde los nodos apareceran
@@ -82,7 +83,7 @@ public class RedPanel extends JPanel {
         JPanel botonesPanel = new JPanel(new GridLayout(3, 5, 5, 5));
 
         JButton refreshButton = new JButton("Refrescar Red");
-        refreshButton.addActionListener(_ -> {
+        refreshButton.addActionListener(e -> {
             cargarDatosEnTablas(red);
             control.playSound();
             System.out.println("Red refrescada");
@@ -90,7 +91,7 @@ public class RedPanel extends JPanel {
         botonesPanel.add(refreshButton);
 
         JButton agregarNodoButton = new JButton("Agregar Nodo");
-        agregarNodoButton.addActionListener(_ -> {
+        agregarNodoButton.addActionListener(e -> {
             control.playSound();
             mostrarVentanaAgregarNodo();
             System.out.println("Mostrar ventana agregar nodo");
@@ -98,7 +99,7 @@ public class RedPanel extends JPanel {
         botonesPanel.add(agregarNodoButton);
 
         JButton eliminarNodoButton = new JButton("Eliminar Nodo");
-        eliminarNodoButton.addActionListener(_ -> {
+        eliminarNodoButton.addActionListener(e -> {
             control.playSound();
             eliminarNodoSeleccionado();
             System.out.println("Eliminar nodo");
@@ -106,7 +107,7 @@ public class RedPanel extends JPanel {
         botonesPanel.add(eliminarNodoButton);
 
         JButton agregarConexionButton = new JButton("Agregar Conexion");
-        agregarConexionButton.addActionListener(_ -> {
+        agregarConexionButton.addActionListener(e -> {
             control.playSound();
             mostrarVentanaAgregarConexion();
             System.out.println("Agregar conexion");
@@ -114,7 +115,7 @@ public class RedPanel extends JPanel {
         botonesPanel.add(agregarConexionButton);
 
         JButton eliminarConexionButton = new JButton("Eliminar Conexion");
-        eliminarConexionButton.addActionListener(_ -> {
+        eliminarConexionButton.addActionListener(e -> {
             control.playSound();
             eliminarConexionSeleccionada();
             System.out.println("Eliminar COnexion");
@@ -122,19 +123,19 @@ public class RedPanel extends JPanel {
         botonesPanel.add(eliminarConexionButton);
 
         JButton cargarButton = new JButton("Cargar Red");
-        cargarButton.addActionListener(_ -> {
+        cargarButton.addActionListener(e -> {
             try {
                 control.playSound();
                 cargarRed();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (IOException e1) {
+                throw new RuntimeException(e1);
             }
             System.out.println("Red cargada");
         });
         botonesPanel.add(cargarButton);
 
         JButton guardarButton = new JButton("Guardar Red");
-        guardarButton.addActionListener(_ -> {
+        guardarButton.addActionListener(e -> {
             control.playSound();
             guardarRed();
             System.out.println("Red Guardada");
@@ -142,7 +143,7 @@ public class RedPanel extends JPanel {
         botonesPanel.add(guardarButton);
 
         JButton pingButton = new JButton("Ping");
-        pingButton.addActionListener(_ -> {
+        pingButton.addActionListener(e -> {
             control.playSound();
             String ipPing = JOptionPane.showInputDialog("Ingresar ip");
             control.playSound();

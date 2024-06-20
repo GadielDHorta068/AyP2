@@ -24,6 +24,7 @@ public class Red {
     private static Graph<Nodo, Conexion> sistema;
     private static TreeMap<String, Vertex<Nodo>> vertices;
 
+
     /**
      * Constructor de la clase Red.
      * Inicializa los mapas de nodos y la lista de conexiones.
@@ -271,6 +272,10 @@ public class Red {
             conexiones.add(conexion.getElement());
         }
         return conexiones;
+    }
+
+    public Graph<Nodo, Conexion> getSistema() {
+        return sistema;
     }
 
     //endregion
