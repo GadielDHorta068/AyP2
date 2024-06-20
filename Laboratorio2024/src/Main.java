@@ -33,8 +33,6 @@ public class Main extends JFrame {
      */
     public static void main(String[] args) {
         System.out.println("Gestor de redes Denebzera");
-        //sanbox para romper todo
-
         SwingUtilities.invokeLater(() -> {
             Main frame = null;
             try {

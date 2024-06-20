@@ -84,6 +84,7 @@ public class RedPanel extends JPanel {
         JButton refreshButton = new JButton("Refrescar Red");
         refreshButton.addActionListener(_ -> {
             cargarDatosEnTablas(red);
+            control.playSound();
             System.out.println("Red refrescada");
         });
         botonesPanel.add(refreshButton);
@@ -142,13 +143,15 @@ public class RedPanel extends JPanel {
 
         JButton pingButton = new JButton("Ping");
         pingButton.addActionListener(_ -> {
-
+            control.playSound();
             String ipPing = JOptionPane.showInputDialog("Ingresar ip");
             control.playSound();
             if (red.ping(ipPing)) {
                 JOptionPane.showMessageDialog(null, "El nodo " + ipPing + " Existe y esta activo");
+                control.playSound();
             } else {
                 JOptionPane.showMessageDialog(null, "El nodo " + ipPing + " No existe o esta inactivo");
+                control.playSound();
             }
 
             System.out.println("PingPong");
@@ -161,6 +164,7 @@ public class RedPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 control.playSound();
                 JOptionPane.showMessageDialog(null, control.arbolPesoMinimo(red));
+                control.playSound();
             }
         });
         botonesPanel.add(caminoCortoButton);
@@ -171,8 +175,11 @@ public class RedPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 control.playSound();
                 String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
+                control.playSound();
                 String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
+                control.playSound();
                 JOptionPane.showMessageDialog(null, control.traceroute(red, origenId, destinoId));
+                control.playSound();
             }
         });
         botonesPanel.add(caminoRapidoButton);
@@ -183,18 +190,23 @@ public class RedPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 control.playSound();
                 String origenId = JOptionPane.showInputDialog("Ingrese el ID del nodo origen:");
+                control.playSound();
                 String destinoId = JOptionPane.showInputDialog("Ingrese el ID del nodo destino:");
+                control.playSound();
                 JOptionPane.showMessageDialog(null, control.flujo(red, origenId, destinoId));
+                control.playSound();
             }
         });
         botonesPanel.add(flujoButton);
 
-        JButton graficoButton = new JButton("Dibujar Graph (todavia no)");
+        JButton graficoButton = new JButton("Dibujar Graph (no) Probar");
         graficoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 control.playSound();
+                Utilidades.crearGrafo(red);
                 JOptionPane.showMessageDialog(null, "Bug en construccion");
+                control.playSound();
             }
         });
         botonesPanel.add(graficoButton);
@@ -259,6 +271,7 @@ public class RedPanel extends JPanel {
     private void guardarRed() {
         JFileChooser fileChooser = new JFileChooser();
         int option = fileChooser.showSaveDialog(this);
+        control.playSound();
         if (option == JFileChooser.APPROVE_OPTION) {
             control.playSound();
             String archivo = fileChooser.getSelectedFile().getAbsolutePath();
@@ -270,7 +283,9 @@ public class RedPanel extends JPanel {
     private void cargarRed() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         int option = fileChooser.showOpenDialog(this);
+        control.playSound();
         if (option == JFileChooser.APPROVE_OPTION) {
+            control.playSound();
             String archivo = fileChooser.getSelectedFile().getAbsolutePath();
             Red red = CargarRed.cargarRed(archivo);
             red.imprimirNodos();
@@ -370,6 +385,7 @@ public class RedPanel extends JPanel {
                     Router router = new Router(id, ipAddress, mac, status, ubicacion, marca, firmware, capacidad);
                     red.agregarNodo(router);
                 }
+                control.playSound();
                 cargarDatosEnTablas(red);
                 agregarNodoFrame.dispose();
             }
@@ -386,8 +402,10 @@ public class RedPanel extends JPanel {
             String id = (String) nodosTable.getValueAt(selectedRow, 0);
             red.eliminarNodo(id);
             cargarDatosEnTablas(red);
+            control.playSound();
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un nodo para eliminar.", "Eliminar Nodo", JOptionPane.WARNING_MESSAGE);
+            control.playSound();
         }
     }
 
@@ -481,8 +499,10 @@ public class RedPanel extends JPanel {
                     red.agregarConexion(conexion);
                     cargarDatosEnTablas(red);
                     agregarConexionFrame.dispose();
+                    control.playSound();
                 } else {
                     JOptionPane.showMessageDialog(agregarConexionFrame, "Nodos invalidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    control.playSound();
                 }
             }
         });
@@ -504,6 +524,7 @@ public class RedPanel extends JPanel {
 
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una conexion para eliminar.", "Eliminar Conexion", JOptionPane.WARNING_MESSAGE);
+            control.playSound();
         }
     }
 
@@ -537,6 +558,8 @@ public class RedPanel extends JPanel {
         if (respuesta == JOptionPane.YES_OPTION) {
             control.playSound();
             control.dialogoInicial();
+        } else {
+            control.playSound();
         }
     }
 }
