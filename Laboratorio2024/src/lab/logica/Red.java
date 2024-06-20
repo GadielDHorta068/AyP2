@@ -52,18 +52,22 @@ public class Red {
      * @param conexion La conexion a agregar
      */
     public void agregarConexion(Conexion conexion) {
-        Vertex<Nodo> sourceVertex = vertices.get(conexion.getSourceNode().getId());
-        Vertex<Nodo> targetVertex = vertices.get(conexion.getTargetNode().getId());
+        Nodo sourceNode = conexion.getSourceNode();
+        Nodo targetNode = conexion.getTargetNode();
+        if (sourceNode != null && targetNode != null && sourceNode.getStatus() && targetNode.getStatus()) {
 
-        if (sourceVertex != null && targetVertex != null) {
-            for (Edge<Conexion> con : sistema.edges()) {
-                if (con == conexion) {
-                    //figurita repetida
-                    sistema.removeEdge(sistema.getEdge(sourceVertex, targetVertex));
+            Vertex<Nodo> sourceVertex = vertices.get(conexion.getSourceNode().getId());
+            Vertex<Nodo> targetVertex = vertices.get(conexion.getTargetNode().getId());
+
+            if (targetVertex.getElement().getStatus() && sourceVertex.getElement().getStatus()) {
+                for (Edge<Conexion> con : sistema.edges()) {
+                    if (con == conexion) {
+                        //figurita repetida
+                        sistema.removeEdge(sistema.getEdge(sourceVertex, targetVertex));
+                    }
                 }
+                sistema.insertEdge(sourceVertex, targetVertex, conexion);
             }
-            sistema.insertEdge(sourceVertex, targetVertex, conexion);
-
         }
     }
 
@@ -171,29 +175,37 @@ public class Red {
         }
 
         // Encuentra el camino mas corto
-        PositionalList<Vertex<Nodo>> lista = GraphAlgorithms.shortestPathList(rapido, res.get(nodo1), res.get(nodo2));
+        PositionalList<Vertex<Nodo>> lista = null;
+        try {
+            lista = GraphAlgorithms.shortestPathList(rapido, res.get(nodo1), res.get(nodo2));
+        } catch (Exception e) {
+            System.out.println("Fallo la validacion de algun nodo. Inactivo?");
+        }
         List<Nodo> tramos = new ArrayList<>();
 
         // Extrae las conexiones del camino mas corto
-        Position<Vertex<Nodo>> aux = lista.first();
-        tramos.addFirst(lista.first().getElement().getElement());
+        if (lista != null) {
+            Position<Vertex<Nodo>> aux = lista.first();
+            tramos.addFirst(lista.first().getElement().getElement());
 
-        while (lista.after(aux) != null) {
-            aux = lista.after(aux);
+            while (lista.after(aux) != null) {
+                aux = lista.after(aux);
 
-            //Aseguro no copiar cosas erroneas
-            if (lista.first().getElement().getElement().getId().equals(nodo1.getId()) && lista.last().getElement().getElement().getId().equals(nodo2.getId()) ||
-                    lista.first().getElement().getElement().getId().equals(nodo2.getId()) && lista.last().getElement().getElement().getId().equals(nodo1.getId())) {
+                //Aseguro no copiar cosas erroneas
+                if (lista.first().getElement().getElement().getId().equals(nodo1.getId()) && lista.last().getElement().getElement().getId().equals(nodo2.getId()) ||
+                        lista.first().getElement().getElement().getId().equals(nodo2.getId()) && lista.last().getElement().getElement().getId().equals(nodo1.getId())) {
 
-                tramos.add(aux.getElement().getElement());
-            } else {
-                // Manejar el caso en que no se encuentra una conexion entre los nodos,
-                // esto debo cambiar para que sea amigable a la interfaz. (Nunca deberia llegar aca igualmente)
-                throw new IllegalStateException("No se encontro una conexion entre " + nodo1.getId() + " y " + nodo2.getId());
+                    tramos.add(aux.getElement().getElement());
+                } else {
+                    // Manejar el caso en que no se encuentra una conexion entre los nodos,
+                    // esto debo cambiar para que sea amigable a la interfaz. (Nunca deberia llegar aca igualmente)
+                    throw new IllegalStateException("No se encontro una conexion entre " + nodo1.getId() + " y " + nodo2.getId());
+                }
             }
-        }
 
-        return tramos;
+            return tramos;
+        }
+        return null;
     }
 
     /**
@@ -290,25 +302,27 @@ public class Red {
         List<Nodo> camino = caminoMasRapido(n1, n2);
         PositionalList<Nodo> nodos = new LinkedPositionalList<>();
         List<Integer> flow = new ArrayList<>();
-
-        for (Nodo n : camino) {
-            nodos.addLast(n);
-        }
-
-        Position<Nodo> aux = nodos.first();
-        while (nodos.after(aux) != null) {
-            for (Conexion conexion : getConexiones()) {
-                Vertex<Nodo> sourceVertex = vertices.get(aux.getElement().getId());
-                Vertex<Nodo> targetVertex = vertices.get(nodos.after(aux).getElement().getId());
-
-                flow.add(sistema.getEdge(sourceVertex, targetVertex).getElement().getBandwidth());
+        if (camino != null) {
+            for (Nodo n : camino) {
+                nodos.addLast(n);
             }
-            aux = nodos.after(aux);
-        }
 
-        if (!flow.isEmpty()) {
-            flow.sort(Comparator.naturalOrder());
-            return flow.getFirst();
+            Position<Nodo> aux = nodos.first();
+            while (nodos.after(aux) != null) {
+                for (Conexion conexion : getConexiones()) {
+                    Vertex<Nodo> sourceVertex = vertices.get(aux.getElement().getId());
+                    Vertex<Nodo> targetVertex = vertices.get(nodos.after(aux).getElement().getId());
+
+                    flow.add(sistema.getEdge(sourceVertex, targetVertex).getElement().getBandwidth());
+                }
+                aux = nodos.after(aux);
+            }
+
+            if (!flow.isEmpty()) {
+                flow.sort(Comparator.naturalOrder());
+                return flow.getFirst();
+            }
+            return -1;
         }
         return -1;
     }

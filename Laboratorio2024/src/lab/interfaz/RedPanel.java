@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +64,8 @@ public class RedPanel extends JPanel {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        applyCustomFont("Laboratorio2024/src/lab/interfaz/FiraMonoNerdFont-Medium.otf");
+        URL urlArchivo = getClass().getResource("/FiraMonoNerdFont-Medium.otf");
+        applyCustomFont(urlArchivo.getPath());
 
         mostrarDialogoInicial();
 

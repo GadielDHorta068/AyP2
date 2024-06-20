@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -28,7 +29,8 @@ public class Controlador extends JFrame {
      */
     public void playSound() {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Laboratorio2024/src/lab/interfaz/boton.wav").getAbsoluteFile());
+            URL urlArchivo = getClass().getResource("/boton.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(urlArchivo.getPath()).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -92,16 +94,19 @@ public class Controlador extends JFrame {
         if (nodoOrigen.equals(nodoDestino)) {
             return "Los nodo origen y destino son iguales";
         }
+
         List<Nodo> camino = red.caminoMasRapido(nodoOrigen, nodoDestino);
 
         StringBuilder caminoStr = new StringBuilder("Camino mas corto: ");
+        if (camino != null) {
+            for (Nodo nodo : camino) {
+                caminoStr.append(nodo.getId()).append(" -> ");
+            }
 
-        for (Nodo nodo : camino) {
-            caminoStr.append(nodo.getId()).append(" -> ");
+            caminoStr.setLength(caminoStr.length() - 4);
+            return caminoStr.toString();
         }
-
-        caminoStr.setLength(caminoStr.length() - 4);
-        return caminoStr.toString();
+        return "No hay camino, o un nodo esta inactivo";
     }
 
     public String flujo(Red red, String origen, String destino) {
@@ -115,6 +120,9 @@ public class Controlador extends JFrame {
 
         if (nodoOrigen.equals(nodoDestino)) {
             return "Los nodo origen y destino son iguales";
+        }
+        if (red.flujoMaximo(nodoOrigen, nodoDestino) == -1) {
+            return "No hay conexion entre nodos o hay alguno inactivo";
         }
         return "Flujo maximo entre los nodos de : " + "\n" + red.flujoMaximo(nodoOrigen, nodoDestino) +
                 " MB/s";
