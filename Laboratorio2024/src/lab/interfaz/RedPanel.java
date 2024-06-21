@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * La clase RedPanel representa la interfaz grafica de usuario para la gestion de una red.
@@ -202,13 +203,12 @@ public class RedPanel extends JPanel {
         });
         botonesPanel.add(flujoButton);
 
-        JButton graficoButton = new JButton("Dibujar Graph (no) Probar");
+        JButton graficoButton = new JButton("Dibujar Graph");
         graficoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 control.playSound();
                 Utilidades.crearGrafo(red);
-                JOptionPane.showMessageDialog(null, "Bug en construccion");
                 control.playSound();
             }
         });
@@ -377,16 +377,16 @@ public class RedPanel extends JPanel {
                 boolean status = statusCheckBox.isSelected();
                 String ubicacion = ubicacionField.getText();
                 String mac = Utilidades.generarMAC();
+                String marca = marcaField.getText();
+                String firmware = firmwareField.getText();
 
-                if (id.startsWith("PC") || id.startsWith("pc")) {
-                    Computadora pc = new Computadora(id, ipAddress, mac, status, ubicacion);
-                    red.agregarNodo(pc);
-                } else {
-                    String marca = marcaField.getText();
-                    String firmware = firmwareField.getText();
+                if (!Objects.equals(marcaField.getText(), "") && !Objects.equals(firmwareField.getText(), "")) {
                     int capacidad = Integer.parseInt(capacidadField.getText());
                     Router router = new Router(id, ipAddress, mac, status, ubicacion, marca, firmware, capacidad);
                     red.agregarNodo(router);
+                } else {
+                    Computadora pc = new Computadora(id, ipAddress, mac, status, ubicacion);
+                    red.agregarNodo(pc);
                 }
                 control.playSound();
                 cargarDatosEnTablas(red);

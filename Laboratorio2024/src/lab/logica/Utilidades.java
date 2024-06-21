@@ -33,38 +33,54 @@ public class Utilidades {
      * @return String
      */
     public static String generarMAC() {
-        Random rand = new Random();
+        Random random = new Random();
         byte[] macAddr = new byte[6];
-        rand.nextBytes(macAddr);
+        random.nextBytes(macAddr);
 
-        //volverlo humanamente legible segun stackoverflow
-        StringBuilder mac = new StringBuilder(18);
+        StringBuilder macAddress = new StringBuilder(18);
         for (byte b : macAddr) {
-            if (mac.length() == 0) {
-                mac.append(":");
+            if (macAddress.length() > 0) {
+                macAddress.append(":");
             }
-            mac.append(String.format("%02x", b));
+            macAddress.append(String.format("%02x", b));
         }
-        return mac.toString().toUpperCase();
+        return macAddress.toString().toUpperCase();
     }
 
     /**
-     * Este metodo genera una direcion IP acorde al nodo Origen desde donde se conecta el nodo pc
+     * Diferenciar nodos para saber si asignar ip o no
      *
      * @param router Nodo origen
      * @param pc     Nodo Destino
      */
     public static void asignarDireccion(Nodo router, Nodo pc) {
-        if (Router.class != pc.getClass()) {
-            String[] segmentos = router.getIpAddress().split("\\.");
-            if (segmentos.length != 4) {
-                throw new IllegalArgumentException("Direccion IP invilida");
-            }
-            int ultimoSegmento = Integer.parseInt(segmentos[3]);
-            ultimoSegmento = router.nuevaIP();
-            segmentos[3] = String.valueOf(ultimoSegmento);
-            pc.setIpAddress(String.join(".", segmentos));
+        // Verifica que uno de los nodos sea un Router
+        if (!(router instanceof Router) && !(pc instanceof Router)) {
+            throw new IllegalArgumentException("Al menos uno de los nodos debe ser un Router");
         }
+
+        // Asigna la dirección IP
+        if (router instanceof Router && !(pc instanceof Router)) {
+            asignarIp(router, pc);
+        } else if (!(router instanceof Router)) {
+            asignarIp(pc, router);
+        }
+    }
+
+    /**
+     * Asigna la ip al nodo correspondiente para que tenga coherencia con el router
+     *
+     * @param router Origen
+     * @param nodo   Destino
+     */
+    private static void asignarIp(Nodo router, Nodo nodo) {
+        String[] segmentos = router.getIpAddress().split("\\.");
+        if (segmentos.length != 4) {
+            throw new IllegalArgumentException("Direccion IP invalida");
+        }
+        int ultimoSegmento = router.nuevaIP();
+        segmentos[3] = String.valueOf(ultimoSegmento);
+        nodo.setIpAddress(String.join(".", segmentos));
     }
 
     /**
@@ -104,7 +120,7 @@ public class Utilidades {
             for (Conexion edge : grafo.edgeSet()) {
                 Object source = vertexMap.get(grafo.getEdgeSource(edge));
                 Object target = vertexMap.get(grafo.getEdgeTarget(edge));
-               
+
                 //Quitar flechitas de las lineas
                 Map<String, Object> style = graph.getStylesheet().getDefaultEdgeStyle();
                 style.put("endArrow", "none");
@@ -120,7 +136,7 @@ public class Utilidades {
         layout.execute(graph.getDefaultParent());
 
         JFrame frame = new JFrame("Visualización del Grafo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(800, 600);
 
         mxGraphComponent graphComponent = new mxGraphComponent(graph);

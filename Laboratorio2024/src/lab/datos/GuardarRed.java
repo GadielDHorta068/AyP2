@@ -29,12 +29,12 @@ public class GuardarRed {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
             bw.write("#Nodos" + "\n");
             for (Vertex<Nodo> nodo : red.getNodos().values()) {
-                bw.write(nodo.getElement().toCSV() + "\n");
+                bw.write("nodo," + nodo.getElement().toCSV() + "\n");
             }
 
             bw.write("#Conexiones" + "\n");
             for (Conexion conexion : red.getConexiones()) {
-                bw.write(conexion.toCSV() + "\n");
+                bw.write("conexion," + conexion.toCSV() + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();

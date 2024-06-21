@@ -19,7 +19,7 @@ public class Main extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 800);
         setLocationRelativeTo(null);
-        
+
         URL urlArchivo = getClass().getResource("/graph.txt");
         Red red = CargarRed.cargarRed(urlArchivo.getPath());
 

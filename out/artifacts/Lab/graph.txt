@@ -1,16 +1,16 @@
 #Nodos
-Modem,192.168.0.1,:4761F21E9AE6,false,Sala de servidores,RedUno,1.0,3500
-Router1,192.168.1.1,:76ABC4B93DFF,true,Oficina,Cisco,1.5.1.13,450
-Router2,192.168.2.1,:EF229EDF54E5,true,Piso 2,TP-Link,2.1.0,600
-pc1,192.168.1.2,:30CDC27E56CE,true,Habitacion
-pc2,192.168.1.4,:ADA4662C49AF,true,Oficina
-pc3,192.168.2.1,:DD6737EE7019,true,Laboratorio
-pc4,192.168.2.2,:E45BD0599536,true,Sala de reuniones
+nodo,Modem,192.168.0.1,47:61:F2:1E:9A:E6,true,Sala de servidores,RedUno,1.0,3500
+nodo,Router1,192.168.1.1,76:AB:C4:B9:3D:FF,true,Oficina,Cisco,1.5.1.13,450
+nodo,Router2,192.168.2.1,EF:22:9E:DF:54:E5,true,Piso 2,TP-Link,2.1.0,600
+nodo,pc1,192.168.1.2,30:CD:C2:7E:56:CE,true,Habitacion
+nodo,pc2,192.168.1.4,AD:A4:66:2C:49:AF,true,Oficina
+nodo,pc3,192.168.2.1,DD:67:37:EE:70:19,true,Laboratorio
+nodo,pc4,192.168.2.2,E4:5B:D0:59:95:36,true,Sala de reuniones
 #Conexiones
-Router1,pc1,UTP,100,5,true,0.01
-Router1,pc2,UTP,100,5,true,0.01
-Router2,pc3,WiFi,300,10,true,0.05
-Router2,pc4,WiFi,300,10,true,0.05
-Modem,Router1,Fibra optica,1000,1,true,0.0
-Router1,Router2,Ethernet,500,2,true,0.02
-Modem,Router2,Fibra optica,1000,1,true,0.0
+conexion,Router1,pc1,UTP,100,5,true,0.01
+conexion,Router1,pc2,UTP,100,5,true,0.01
+conexion,Router2,pc3,WiFi,300,10,true,0.05
+conexion,Router2,pc4,WiFi,300,10,true,0.05
+conexion,Modem,Router1,Fibra optica,1000,1,true,0.0
+conexion,Router1,Router2,Ethernet,500,2,true,0.02
+conexion,Modem,Router2,Fibra optica,1000,1,true,0.0

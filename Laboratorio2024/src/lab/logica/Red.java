@@ -3,6 +3,7 @@
  */
 package lab.logica;
 
+import lab.modelo.Computadora;
 import lab.modelo.Conexion;
 import lab.modelo.Nodo;
 import lab.modelo.Router;
@@ -90,8 +91,17 @@ public class Red {
      * @param targetId El nodo Objetivo
      */
     public void eliminarConexion(String sourceId, String targetId) {
+        Nodo s = vertices.get(sourceId).getElement();
+        Nodo t = vertices.get(targetId).getElement();
+
         Vertex<Nodo> sourceVertex = vertices.get(sourceId);
         Vertex<Nodo> targetVertex = vertices.get(targetId);
+
+        if (s.getClass().equals(Computadora.class)) {
+            s.setIpAddress("");
+        } else if (t.getClass().equals(Computadora.class)) {
+            t.setIpAddress("");
+        }
 
         if (sourceVertex != null && targetVertex != null) {
             sistema.removeEdge(sistema.getEdge(sourceVertex, targetVertex));
