@@ -2,17 +2,19 @@ package lab.modelo;
 
 import lab.logica.Utilidades;
 
+import java.util.Objects;
+
 /**
  * Clase conexion
  */
 public class Conexion {
-    Nodo sourceNode;
-    Nodo targetNode;
-    String tipoConexion;
-    int bandwidth;
-    int latencia;
-    Boolean status;
-    double errorRate; // Tasa de errores en % perdida de packetes
+    private Nodo sourceNode;
+    private Nodo targetNode;
+    private String tipoConexion;
+    private int bandwidth;
+    private int latencia;
+    private Boolean status;
+    private double errorRate; // Tasa de errores en % perdida de packetes
 
     /**
      * Constructor de Conexion
@@ -169,7 +171,21 @@ public class Conexion {
      */
     @Override
     public String toString() {
-        return "Source: " + sourceNode.id + ", Target: " + targetNode.id + ", Tipo: " + tipoConexion + ", Bandwidth: " + bandwidth + " Mbps, Latencia: " + latencia + " ms, Status: " + status + ", Error Rate: " + errorRate + " %";
+        return "Source: " + sourceNode.getId() + ", Target: " + targetNode.getId() + ", Tipo: " + tipoConexion + ", Bandwidth: " + bandwidth + " Mbps, Latencia: " + latencia + " ms, Status: " + status + ", Error Rate: " + errorRate + " %";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Conexion conexion = (Conexion) o;
+        return Objects.equals(sourceNode, conexion.sourceNode) && Objects.equals(targetNode, conexion.targetNode)
+                || Objects.equals(targetNode, conexion.targetNode) && Objects.equals(sourceNode, conexion.sourceNode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sourceNode, targetNode);
     }
 
     /**
@@ -178,6 +194,6 @@ public class Conexion {
      * @return String
      */
     public String toCSV() {
-        return sourceNode.id + "," + targetNode.id + "," + tipoConexion + "," + bandwidth + "," + latencia + "," + status + "," + errorRate;
+        return sourceNode.getId() + "," + targetNode.getId() + "," + tipoConexion + "," + bandwidth + "," + latencia + "," + status + "," + errorRate;
     }
 }

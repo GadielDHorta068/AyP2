@@ -22,8 +22,7 @@ public class Main extends JFrame {
 
         URL urlArchivo = getClass().getResource("/graph.txt");
         Red red = CargarRed.cargarRed(urlArchivo.getPath());
-
-        // Crear el panel de la red y agregarlo a la ventana
+        
         RedPanel redPanel = new RedPanel(red);
         add(redPanel);
     }

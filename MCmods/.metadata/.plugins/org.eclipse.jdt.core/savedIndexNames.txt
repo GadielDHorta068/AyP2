@@ -1,0 +1,1 @@
+INDEX VERSION 1.134+C:\Users\gadie\eclipse-workspace\MCmods\.metadata\.plugins\org.eclipse.jdt.core

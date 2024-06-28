@@ -11,7 +11,6 @@ import lab.modelo.Router;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Esta clase maneja la carga de un archivo con informacion de una red previamente creada
@@ -38,7 +37,7 @@ public class CargarRed {
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
 
-                if (Objects.equals(datos[0], "nodo")) {
+                if (datos[0].equals("nodo")) {
                     boolean status = Boolean.parseBoolean(datos[4]);
                     if (datos.length == 6) {
                         Computadora pc = new Computadora(datos[1], datos[2], datos[3], status, datos[5]);
@@ -60,7 +59,7 @@ public class CargarRed {
         while ((linea = br.readLine()) != null) {
             String[] datos = linea.split(",");
 
-            if (Objects.equals(datos[0], "conexion")) {
+            if (datos[0].equals("conexion")) {
                 boolean conexionStatus = Boolean.parseBoolean(datos[6]);
                 Conexion conexion = new Conexion(red.buscar(datos[1]), red.buscar(datos[2]), datos[3], Integer.parseInt(datos[4]), Integer.parseInt(datos[5]), conexionStatus, Double.parseDouble(datos[7]));
                 red.agregarConexion(conexion);

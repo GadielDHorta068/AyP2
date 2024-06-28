@@ -5,13 +5,13 @@ import java.util.Objects;
 /**
  * Clase que luego sera heredada por Computadora y Router, ambos comparten todas las variables y metodos aqui usados
  */
-public class Nodo {
-    String id;
-    String ipAddress;
-    String macAddress;
-    Boolean status;
-    String ubicacion;
-    int ipLibre;
+public abstract class Nodo {
+    private String id;
+    private String ipAddress;
+    private String macAddress;
+    private Boolean status;
+    private String ubicacion;
+    private int ipLibre;
 
     /**
      * Constructor de Nodo
@@ -131,7 +131,7 @@ public class Nodo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Nodo nodo = (Nodo) o;
-        return Objects.equals(id, nodo.id) && Objects.equals(ipAddress, nodo.ipAddress) && Objects.equals(macAddress, nodo.macAddress) && Objects.equals(status, nodo.status) && Objects.equals(ubicacion, nodo.ubicacion);
+        return Objects.equals(id, nodo.id);
     }
 
     /**

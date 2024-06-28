@@ -168,32 +168,29 @@ public class Red {
      * @return List
      */
     public List<Nodo> caminoMasRapido(Nodo nodo1, Nodo nodo2) {
-        // Copia el grafo original
+
         Graph<Nodo, Integer> rapido = new AdjacencyMapGraph<>(false);
         Map<Nodo, Vertex<Nodo>> res = new HashMap<>();
 
-        // Copia los vertices
         for (Vertex<Nodo> vertex : sistema.vertices()) {
             res.put(vertex.getElement(), rapido.insertVertex(vertex.getElement()));
         }
 
-        // Copia las aristas con el peso (bandwidth) como Integer
-        //Convertir de Ancho de Banda a Segundos al pasar 10000MB de informacion
         for (Edge<Conexion> edge : sistema.edges()) {
             Vertex<Nodo>[] vert = sistema.endVertices(edge);
             rapido.insertEdge(res.get(vert[0].getElement()), res.get(vert[1].getElement()), (10000 / edge.getElement().getBandwidth()));
         }
 
-        // Encuentra el camino mas corto
         PositionalList<Vertex<Nodo>> lista = null;
         try {
             lista = GraphAlgorithms.shortestPathList(rapido, res.get(nodo1), res.get(nodo2));
         } catch (Exception e) {
             System.out.println("Fallo la validacion de algun nodo. Inactivo?");
         }
+
+
         List<Nodo> tramos = new ArrayList<>();
 
-        // Extrae las conexiones del camino mas corto
         if (lista != null) {
             Position<Vertex<Nodo>> aux = lista.first();
             tramos.addFirst(lista.first().getElement().getElement());
@@ -225,17 +222,14 @@ public class Red {
      * @return List
      */
     public List<Conexion> MST() {
-        // Copia el grafo original
         Graph<Nodo, Integer> copy = new AdjacencyMapGraph<>(false);
         Map<Nodo, Vertex<Nodo>> res = new HashMap<>();
-        // Copia los vertices
         for (Vertex<Nodo> vertex : Red.sistema.vertices()) {
             if (vertex.getElement().getClass() == Router.class) {
                 res.put(vertex.getElement(), copy.insertVertex(vertex.getElement()));
             }
         }
 
-        // Copia las aristas con el peso (bandwidth) como Integer y pasar a segundos con un Archivo de 10000MB
         for (Edge<Conexion> edge : Red.sistema.edges()) {
             if (edge.getElement().getTargetNode().getClass() == Router.class && edge.getElement().getSourceNode().getClass() == Router.class) {
                 Vertex<Nodo>[] vert = Red.sistema.endVertices(edge);
@@ -255,7 +249,6 @@ public class Red {
             Nodo nodo2 = vertices[1].getElement();
             Conexion conexion = null;
 
-            // Busca la conexion original en el grafo original
             for (Edge<Conexion> e : sistema.edges()) {
                 Vertex<Nodo>[] originalVertices = sistema.endVertices(e);
                 if ((originalVertices[0].getElement().equals(nodo1) && originalVertices[1].getElement().equals(nodo2)) ||

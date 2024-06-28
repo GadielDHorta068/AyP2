@@ -56,10 +56,10 @@ public class Utilidades {
     public static void asignarDireccion(Nodo router, Nodo pc) {
         // Verifica que uno de los nodos sea un Router
         if (!(router instanceof Router) && !(pc instanceof Router)) {
-            throw new IllegalArgumentException("Al menos uno de los nodos debe ser un Router");
+            System.out.println("Al menos uno de los nodos debe ser un Router");
         }
 
-        // Asigna la dirección IP
+        // Asigna la direcciï¿½n IP
         if (router instanceof Router && !(pc instanceof Router)) {
             asignarIp(router, pc);
         } else if (!(router instanceof Router)) {
@@ -74,13 +74,15 @@ public class Utilidades {
      * @param nodo   Destino
      */
     private static void asignarIp(Nodo router, Nodo nodo) {
-        String[] segmentos = router.getIpAddress().split("\\.");
-        if (segmentos.length != 4) {
-            throw new IllegalArgumentException("Direccion IP invalida");
+        if (nodo != null) {
+            String[] segmentos = router.getIpAddress().split("\\.");
+            if (segmentos.length != 4) {
+                throw new IllegalArgumentException("Direccion IP invalida");
+            }
+            int ultimoSegmento = router.nuevaIP();
+            segmentos[3] = String.valueOf(ultimoSegmento);
+            nodo.setIpAddress(String.join(".", segmentos));
         }
-        int ultimoSegmento = router.nuevaIP();
-        segmentos[3] = String.valueOf(ultimoSegmento);
-        nodo.setIpAddress(String.join(".", segmentos));
     }
 
     /**
@@ -93,7 +95,7 @@ public class Utilidades {
         Graph<Nodo, Conexion> grafo = new SimpleGraph<>(Conexion.class);
         Map<Nodo, Vertex<Nodo>> res = new HashMap<>();
 
-        // Insertar vértices en el grafo
+        // Insertar vï¿½rtices en el grafo
         for (Vertex<Nodo> vertex : red.getNodos().values()) {
             grafo.addVertex(vertex.getElement());
             res.put(vertex.getElement(), vertex);
@@ -135,9 +137,9 @@ public class Utilidades {
         mxCircleLayout layout = new mxCircleLayout(graph);
         layout.execute(graph.getDefaultParent());
 
-        JFrame frame = new JFrame("Visualización del Grafo");
+        JFrame frame = new JFrame("Visualizacion del Grafo");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(450, 450);
 
         mxGraphComponent graphComponent = new mxGraphComponent(graph);
         frame.getContentPane().add(graphComponent, BorderLayout.CENTER);

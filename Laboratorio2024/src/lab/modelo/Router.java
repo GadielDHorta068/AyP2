@@ -89,7 +89,7 @@ public class Router extends Nodo {
      */
     @Override
     public String toString() {
-        return "ID: " + id + ", IP: " + ipAddress + ", MAC: " + macAddress + ", Status: " + status + ", Ubicacion: " + ubicacion + ", Modelo: " + modelo + ", Firmware: " + firmware + ", Throughput: " + throughput + " Mbps";
+        return "ID: " + getId() + ", IP: " + getIpAddress() + ", MAC: " + getMacAddress() + ", Status: " + getStatus() + ", Ubicacion: " + getUbicacion() + ", Modelo: " + modelo + ", Firmware: " + firmware + ", Throughput: " + throughput + " Mbps";
     }
 
     /**
