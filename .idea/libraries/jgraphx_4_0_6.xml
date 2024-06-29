@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jgraphx-4.0.6">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Laboratorio2024/libs/jgraphx-4.0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Laboratorio2024/libs/jgrapht-core-1.5.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
